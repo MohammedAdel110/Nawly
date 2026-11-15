@@ -16,7 +16,7 @@ public sealed class AttachmentService(IFileStorage fileStorage) : IAttachmentSer
         "image/webp"
     };
 
-    public Task<Result<UploadedFileDto>> UploadImageAsync(
+    public async Task<Result<UploadedFileDto>> UploadImageAsync(
         Stream content,
         string fileName,
         string contentType,
@@ -25,16 +25,77 @@ public sealed class AttachmentService(IFileStorage fileStorage) : IAttachmentSer
         CancellationToken ct = default)
     {
         if (string.IsNullOrWhiteSpace(fileName))
-            return Task.FromResult(Result.Failure<UploadedFileDto>(Error.Validation("attachment.invalid_name", "File name is required.")));
+            return Result.Failure<UploadedFileDto>(Error.Validation("attachment.invalid_name", "File name is required."));
 
         if (sizeBytes <= 0 || sizeBytes > MaxImageBytes)
-            return Task.FromResult(Result.Failure<UploadedFileDto>(Error.Validation("attachment.invalid_size", "Image size must be between 1 byte and 5 MB.")));
+            return Result.Failure<UploadedFileDto>(Error.Validation("attachment.invalid_size", "Image size must be between 1 byte and 5 MB."));
 
         if (!AllowedImageContentTypes.Contains(contentType))
-            return Task.FromResult(Result.Failure<UploadedFileDto>(Error.Validation("attachment.unsupported_type", "Only JPEG, PNG, and WebP images are supported.")));
+            return Result.Failure<UploadedFileDto>(Error.Validation("attachment.unsupported_type", "Only JPEG, PNG, and WebP images are supported."));
 
-        var sanitizedFolder = string.IsNullOrWhiteSpace(folder) ? "uploads" : folder.Trim().ToLowerInvariant();
-        return fileStorage.UploadAsync(content, fileName, contentType, sanitizedFolder, ct);
+        Stream uploadStream = content;
+        MemoryStream? bufferedStream = null;
+
+        try
+        {
+            if (!content.CanSeek)
+            {
+                bufferedStream = new MemoryStream();
+                await content.CopyToAsync(bufferedStream, ct);
+                bufferedStream.Position = 0;
+                uploadStream = bufferedStream;
+            }
+
+            var originalPosition = uploadStream.Position;
+            var header = new byte[12];
+            var totalRead = 0;
+            while (totalRead < header.Length)
+            {
+                var read = await uploadStream.ReadAsync(header.AsMemory(totalRead, header.Length - totalRead), ct);
+                if (read == 0)
+                    break;
+                totalRead += read;
+            }
+
+            uploadStream.Position = originalPosition;
+
+            if (!HasValidImageSignature(contentType, header, totalRead))
+            {
+                return Result.Failure<UploadedFileDto>(Error.Validation(
+                    "attachment.invalid_signature",
+                    "File content does not match the declared image format."));
+            }
+
+            var sanitizedFolder = string.IsNullOrWhiteSpace(folder) ? "uploads" : folder.Trim().ToLowerInvariant();
+            return await fileStorage.UploadAsync(uploadStream, fileName, contentType, sanitizedFolder, ct);
+        }
+        finally
+        {
+            if (bufferedStream is not null)
+                await bufferedStream.DisposeAsync();
+        }
+    }
+
+    private static bool HasValidImageSignature(string contentType, byte[] header, int length)
+    {
+        if (contentType.Equals("image/jpeg", StringComparison.OrdinalIgnoreCase))
+            return length >= 3 && header[0] == 0xFF && header[1] == 0xD8 && header[2] == 0xFF;
+
+        if (contentType.Equals("image/png", StringComparison.OrdinalIgnoreCase))
+        {
+            return length >= 8 &&
+                   header[0] == 0x89 && header[1] == 0x50 && header[2] == 0x4E && header[3] == 0x47 &&
+                   header[4] == 0x0D && header[5] == 0x0A && header[6] == 0x1A && header[7] == 0x0A;
+        }
+
+        if (contentType.Equals("image/webp", StringComparison.OrdinalIgnoreCase))
+        {
+            return length >= 12 &&
+                   header[0] == 0x52 && header[1] == 0x49 && header[2] == 0x46 && header[3] == 0x46 &&
+                   header[8] == 0x57 && header[9] == 0x45 && header[10] == 0x42 && header[11] == 0x50;
+        }
+
+        return false;
     }
 
     public Task<Result<string>> GetDownloadUrlAsync(string storageKey, CancellationToken ct = default)
