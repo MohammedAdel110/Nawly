@@ -63,3 +63,29 @@ public sealed class PaymentsCountSpecification : BaseSpecifications<Payment, Gui
             && (provider == null || p.Provider == provider);
     }
 }
+
+public sealed class PaymentByIdempotencyKeySpecification : BaseSpecifications<Payment, Guid>
+{
+    public PaymentByIdempotencyKeySpecification(Guid orderId, Guid idempotencyKey)
+        : base(p => p.OrderId == orderId && p.IdempotencyKey == idempotencyKey && !p.IsDeleted)
+    {
+        AddInclude(p => p.Refunds);
+    }
+}
+
+public sealed class PaymentByProviderOrderIdSpecification : BaseSpecifications<Payment, Guid>
+{
+    public PaymentByProviderOrderIdSpecification(Nawly.Shared.EnumHelper.PaymentEnums.PaymentProvider provider, string providerOrderId)
+        : base(p => p.Provider == provider && p.ProviderOrderId == providerOrderId && !p.IsDeleted)
+    {
+        AddInclude(p => p.Refunds);
+    }
+}
+
+public sealed class WebhookEventByExternalIdSpecification : BaseSpecifications<PaymentWebhookEvent, Guid>
+{
+    public WebhookEventByExternalIdSpecification(Nawly.Shared.EnumHelper.PaymentEnums.PaymentProvider provider, string externalEventId)
+        : base(e => e.Provider == provider && e.ExternalEventId == externalEventId && !e.IsDeleted)
+    {
+    }
+}
