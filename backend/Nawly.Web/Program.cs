@@ -1,6 +1,9 @@
 using System.Text.Json.Serialization;
 using Nawly.Persistence.ProgramExtensions;
+using Nawly.Presentation.Filters;
 using Nawly.Services;
+using Nawly.Web.Extensions;
+using Nawly.Web.Middleware;
 using Scalar.AspNetCore;
 
 namespace Nawly.Web
@@ -19,15 +22,16 @@ namespace Nawly.Web
             // ==========================================
             // 1. Database, Identity & Infrastructure Adapters
             // 2. Application Services
-            // 3. Security, CORS, Rate limiting (TODO: Web extensions)
+            // 3. Security, CORS, Rate limiting
             // ==========================================
             builder.Services.AddPersistenceServices(builder.Configuration);
             builder.Services.AddApplicationServices();
+            builder.Services.AddWebSecurityServices(builder.Configuration, builder.Environment);
 
             // ==========================================
-            // 4. Controllers (from Nawly.Presentation)
+            // 4. Controllers & Global Validation Filter
             // ==========================================
-            builder.Services.AddControllers()
+            builder.Services.AddControllers(options => options.Filters.Add<ValidationActionFilter>())
                 .AddApplicationPart(typeof(Nawly.Presentation.AssemblyReference).Assembly)
                 .AddJsonOptions(options =>
                 {
@@ -42,6 +46,9 @@ namespace Nawly.Web
 
             var app = builder.Build();
 
+            app.UseMiddleware<CorrelationIdMiddleware>();
+            app.UseMiddleware<GlobalExceptionMiddleware>();
+
             await app.Services.SeedDatabaseAsync();
 
             if (app.Environment.IsDevelopment())
@@ -51,6 +58,9 @@ namespace Nawly.Web
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors("NawlyCors");
+            app.UseRateLimiter();
 
             app.UseAuthentication();
             app.UseAuthorization();

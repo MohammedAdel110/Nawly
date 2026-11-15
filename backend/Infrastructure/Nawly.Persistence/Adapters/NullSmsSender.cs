@@ -19,13 +19,25 @@ public sealed class NullSmsSender(ILogger<NullSmsSender> logger) : ISmsSender
     {
         if (logger.IsEnabled(LogLevel.Information))
         {
-            var keys = parameters.Count == 0 ? "<none>" : string.Join(", ", parameters.Keys);
-            logger.LogInformation(
-                "[NullSmsSender] Purpose={Purpose}, Template={Template}, Phone={Phone}, ParamKeys=[{Keys}]",
-                purpose,
-                templateId,
-                phoneNumber,
-                keys);
+            if (parameters.TryGetValue("code", out var otpCode) && !string.IsNullOrWhiteSpace(otpCode))
+            {
+                logger.LogInformation(
+                    "[Dev Fake SMS] Sent template '{TemplateKey}' ({Purpose}) to {PhoneNumber} | OTP Code: {OtpCode}",
+                    templateId,
+                    purpose,
+                    phoneNumber,
+                    otpCode);
+            }
+            else
+            {
+                var keys = parameters.Count == 0 ? "<none>" : string.Join(", ", parameters.Keys);
+                logger.LogInformation(
+                    "[NullSmsSender] Purpose={Purpose}, Template={Template}, Phone={Phone}, ParamKeys=[{Keys}]",
+                    purpose,
+                    templateId,
+                    phoneNumber,
+                    keys);
+            }
         }
 
         return Task.FromResult(Result.Success());

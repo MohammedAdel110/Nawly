@@ -79,7 +79,9 @@ public sealed class TokenService(
             fullName,
             preferredLanguage,
             roles.ToList(),
-            storeId);
+            storeId,
+            rawRefreshToken,
+            refreshExpires);
 
         return new IssuedTokensResult(dto, rawRefreshToken, refreshExpires);
     }
