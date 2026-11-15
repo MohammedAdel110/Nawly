@@ -1,3 +1,4 @@
+using Nawly.Services;
 using Scalar.AspNetCore;
 
 namespace Nawly.Web
@@ -15,9 +16,10 @@ namespace Nawly.Web
 
             // ==========================================
             // 1. Database & Identity          (TODO: Persistence extensions)
-            // 2. Application Services          (TODO: Services extensions)
+            // 2. Application Services
             // 3. Security, CORS, Rate limiting (TODO: Web extensions)
             // ==========================================
+            builder.Services.AddApplicationServices();
 
             // ==========================================
             // 4. Controllers (from Nawly.Presentation)
