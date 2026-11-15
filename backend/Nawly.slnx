@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/Core/">
+    <Project Path="Core/Nawly.Abstraction/Nawly.Abstraction.csproj" />
+    <Project Path="Core/Nawly.Domain/Nawly.Domain.csproj" />
+    <Project Path="Core/Nawly.Services/Nawly.Services.csproj" />
+  </Folder>
+  <Folder Name="/Infrastructure/">
+    <Project Path="Infrastructure/Nawly.Persistence/Nawly.Persistence.csproj" />
+    <Project Path="Infrastructure/Nawly.Presentation/Nawly.Presentation.csproj" />
+  </Folder>
+  <Project Path="Nawly.Shared/Nawly.Shared.csproj" />
+  <Project Path="Nawly.Web/Nawly.Web.csproj" />
+</Solution>

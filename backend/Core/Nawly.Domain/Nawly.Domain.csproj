@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Entities, value objects, domain events, exceptions, repository/specification/UoW contracts -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="10.0.15" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Nawly.Shared\Nawly.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

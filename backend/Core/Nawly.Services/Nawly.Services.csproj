@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Service implementations, specifications, mapping, validators, domain-event handlers -->
+  <ItemGroup>
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.15" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.23.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Nawly.Shared\Nawly.Shared.csproj" />
+    <ProjectReference Include="..\Nawly.Abstraction\Nawly.Abstraction.csproj" />
+    <ProjectReference Include="..\Nawly.Domain\Nawly.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

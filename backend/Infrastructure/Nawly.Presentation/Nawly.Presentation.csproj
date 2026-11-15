@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- API controllers (thin: dispatch to services only) -->
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Nawly.Abstraction\Nawly.Abstraction.csproj" />
+    <ProjectReference Include="..\..\Core\Nawly.Domain\Nawly.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
