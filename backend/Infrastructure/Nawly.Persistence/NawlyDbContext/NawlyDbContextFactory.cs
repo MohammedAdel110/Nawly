@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
-namespace Nawly.Persistence.NawlyDbContext;
+namespace Nawly.Persistence.Contexts;
 
 public sealed class NawlyDbContextFactory : IDesignTimeDbContextFactory<NawlyDbContext>
 {

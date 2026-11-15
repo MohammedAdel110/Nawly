@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Nawly.Persistence.ProgramExtensions;
 using Nawly.Services;
 using Scalar.AspNetCore;
 
@@ -11,15 +12,16 @@ namespace Nawly.Web
     /// </summary>
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
             // ==========================================
-            // 1. Database & Identity          (TODO: Persistence extensions)
+            // 1. Database, Identity & Infrastructure Adapters
             // 2. Application Services
             // 3. Security, CORS, Rate limiting (TODO: Web extensions)
             // ==========================================
+            builder.Services.AddPersistenceServices(builder.Configuration);
             builder.Services.AddApplicationServices();
 
             // ==========================================
@@ -39,6 +41,8 @@ namespace Nawly.Web
             builder.Services.AddOpenApi();
 
             var app = builder.Build();
+
+            await app.Services.SeedDatabaseAsync();
 
             if (app.Environment.IsDevelopment())
             {
