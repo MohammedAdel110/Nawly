@@ -15,7 +15,7 @@ using Nawly.Domain.Models.Payments;
 using Nawly.Domain.Models.Platform;
 using Nawly.Domain.Models.Promotions;
 
-namespace Nawly.Persistence.NawlyDbContext;
+namespace Nawly.Persistence.Contexts;
 
 public class NawlyDbContext(DbContextOptions<NawlyDbContext> options)
     : IdentityDbContext<AppUser, AppRole, Guid>(options)

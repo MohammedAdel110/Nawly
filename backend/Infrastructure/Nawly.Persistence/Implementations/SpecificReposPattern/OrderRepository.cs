@@ -3,7 +3,7 @@ using Nawly.Domain.Contracts.SpecificReposPattern;
 using Nawly.Domain.Models.Ordering;
 using Nawly.Persistence.Implementations.ReposPattern;
 using Nawly.Shared.EnumHelper.OrderEnums;
-using AppDbContext = Nawly.Persistence.NawlyDbContext.NawlyDbContext;
+using AppDbContext = Nawly.Persistence.Contexts.NawlyDbContext;
 
 namespace Nawly.Persistence.Implementations.SpecificReposPattern;
 

@@ -3,7 +3,7 @@ using Nawly.Domain.Contracts;
 using Nawly.Domain.Contracts.GenericReposPattern;
 using Nawly.Domain.Contracts.SpecificationPattern;
 using Nawly.Persistence.Evaluator;
-using AppDbContext = Nawly.Persistence.NawlyDbContext.NawlyDbContext;
+using AppDbContext = Nawly.Persistence.Contexts.NawlyDbContext;
 
 namespace Nawly.Persistence.Implementations.ReposPattern;
 

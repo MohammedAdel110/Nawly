@@ -4,7 +4,7 @@ using Nawly.Domain.Models.Delivery;
 using Nawly.Domain.Models.Identity;
 using Nawly.Persistence.Implementations.ReposPattern;
 using Nawly.Shared.EnumHelper.DeliveryEnums;
-using AppDbContext = Nawly.Persistence.NawlyDbContext.NawlyDbContext;
+using AppDbContext = Nawly.Persistence.Contexts.NawlyDbContext;
 
 namespace Nawly.Persistence.Implementations.SpecificReposPattern;
 
