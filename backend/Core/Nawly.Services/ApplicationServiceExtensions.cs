@@ -66,6 +66,7 @@ public static class ApplicationServiceExtensions
         services.AddScoped<IDispatchStrategy, WaveDispatchStrategy>();
         services.AddScoped<INotificationStrategy, InAppNotificationStrategy>();
         services.AddScoped<INotificationStrategy, SmsNotificationStrategy>();
+        services.AddScoped<INotificationStrategy, WebPushNotificationStrategy>();
 
         // Domain Event Dispatcher & Handlers
         services.AddScoped<IDomainEventDispatcher, InProcessDomainEventDispatcher>();

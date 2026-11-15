@@ -58,6 +58,7 @@ namespace Nawly.Web
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.UseCors("NawlyCors");
             app.UseRateLimiter();
