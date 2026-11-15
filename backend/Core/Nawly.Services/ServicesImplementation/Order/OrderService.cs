@@ -202,7 +202,13 @@ public sealed class OrderService(
             discountAmount,
             coupon?.Type == CouponType.FreeDelivery));
 
-        if (request.PaymentMethod == PaymentMethod.Cash)
+        if (request.PaymentMethod != PaymentMethod.Cash)
+        {
+            var onlineEnabled = await ServiceHelpers.GetBoolSettingAsync(unitOfWork, "Payments:OnlinePaymentsEnabled", false, ct);
+            if (!onlineEnabled)
+                return Result.Failure<OrderDetailsDto>(Error.Unprocessable("order.payment_method_disabled", "Only Cash payment is currently supported."));
+        }
+        else
         {
             if (customer.IsCodBlocked)
                 return Result.Failure<OrderDetailsDto>(Error.Forbidden("order.cod_blocked", "Cash on Delivery is unavailable for this account."));
@@ -285,6 +291,22 @@ public sealed class OrderService(
             order.AddItem(item);
 
         await orderRepository.AddAsync(order, ct);
+
+        if (request.PaymentMethod == PaymentMethod.Cash)
+        {
+            await unitOfWork.GetRepository<Domain.Models.Payments.Payment, Guid>().AddAsync(new Domain.Models.Payments.Payment
+            {
+                OrderId = order.Id,
+                Method = PaymentMethod.Cash,
+                Provider = PaymentProvider.Cash,
+                Amount = order.Total,
+                Currency = order.Currency,
+                Status = PaymentStatus.Unpaid,
+                IdempotencyKey = effectiveIdempotencyKey,
+                InitiatedAt = clock.UtcNow,
+                CreatedAt = clock.UtcNow
+            }, ct);
+        }
 
         if (coupon is not null)
         {

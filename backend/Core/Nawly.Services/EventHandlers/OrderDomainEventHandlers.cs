@@ -3,8 +3,10 @@ using Nawly.Abstraction.IServices.Notification;
 using Nawly.Domain.Contracts.UnitOfWorkPattern;
 using Nawly.Domain.Events;
 using Nawly.Domain.Models.Identity;
+using Nawly.Services.Specifications.PaymentSpec;
 using Nawly.Shared.EnumHelper.NotificationEnums;
 using Nawly.Shared.EnumHelper.OrderEnums;
+using Nawly.Shared.EnumHelper.PaymentEnums;
 
 namespace Nawly.Services.EventHandlers;
 
@@ -43,6 +45,22 @@ internal static class OrderNotificationHelper
             NotificationChannelFlags.InApp,
             null,
             ct);
+    }
+
+    public static async Task CancelPendingPaymentIfAnyAsync(
+        IUnitOfWork unitOfWork,
+        Guid orderId,
+        CancellationToken ct)
+    {
+        var paymentRepo = unitOfWork.GetRepository<Domain.Models.Payments.Payment, Guid>();
+        var payment = await paymentRepo.GetByIdWithSpecAsync(new PaymentByOrderIdSpecification(orderId, asNoTracking: false), ct);
+        if (payment is { Status: PaymentStatus.Unpaid or PaymentStatus.Pending })
+        {
+            payment.Status = PaymentStatus.Cancelled;
+            payment.UpdatedAt = DateTimeOffset.UtcNow;
+            paymentRepo.Update(payment);
+            await unitOfWork.SaveChangesAsync(ct);
+        }
     }
 }
 
@@ -163,8 +181,11 @@ public sealed class OrderRejectedEventHandler(
     IRealtimeNotifier realtimeNotifier,
     INotificationService notificationService) : IDomainEventHandler<OrderRejectedEvent>
 {
-    public Task HandleAsync(OrderRejectedEvent domainEvent, CancellationToken cancellationToken = default)
-        => OrderNotificationHelper.NotifyCustomerAsync(
+    public async Task HandleAsync(OrderRejectedEvent domainEvent, CancellationToken cancellationToken = default)
+    {
+        await OrderNotificationHelper.CancelPendingPaymentIfAnyAsync(unitOfWork, domainEvent.OrderId, cancellationToken);
+
+        await OrderNotificationHelper.NotifyCustomerAsync(
             unitOfWork,
             realtimeNotifier,
             notificationService,
@@ -177,6 +198,7 @@ public sealed class OrderRejectedEventHandler(
             domainEvent.ReasonText ?? "Sorry, the store could not fulfill your order.",
             null,
             cancellationToken);
+    }
 }
 
 public sealed class OrderCancelledEventHandler(
@@ -184,8 +206,11 @@ public sealed class OrderCancelledEventHandler(
     IRealtimeNotifier realtimeNotifier,
     INotificationService notificationService) : IDomainEventHandler<OrderCancelledEvent>
 {
-    public Task HandleAsync(OrderCancelledEvent domainEvent, CancellationToken cancellationToken = default)
-        => OrderNotificationHelper.NotifyCustomerAsync(
+    public async Task HandleAsync(OrderCancelledEvent domainEvent, CancellationToken cancellationToken = default)
+    {
+        await OrderNotificationHelper.CancelPendingPaymentIfAnyAsync(unitOfWork, domainEvent.OrderId, cancellationToken);
+
+        await OrderNotificationHelper.NotifyCustomerAsync(
             unitOfWork,
             realtimeNotifier,
             notificationService,
@@ -198,4 +223,5 @@ public sealed class OrderCancelledEventHandler(
             "Your order has been cancelled.",
             null,
             cancellationToken);
+    }
 }

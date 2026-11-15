@@ -264,7 +264,13 @@ public sealed class CartService(
             discountAmount,
             isFreeDeliveryCoupon));
 
-        if (request.PaymentMethod == PaymentMethod.Cash)
+        if (request.PaymentMethod != PaymentMethod.Cash)
+        {
+            var onlineEnabled = await ServiceHelpers.GetBoolSettingAsync(unitOfWork, "Payments:OnlinePaymentsEnabled", false, ct);
+            if (!onlineEnabled)
+                violations.Add(new QuoteViolationDto("checkout.payment_method_disabled", "Only Cash payment is currently supported."));
+        }
+        else
         {
             if (customer.IsCodBlocked)
                 violations.Add(new QuoteViolationDto("checkout.cod_blocked", "Cash on Delivery is unavailable for this account."));

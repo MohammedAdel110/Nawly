@@ -100,6 +100,21 @@ internal static class ServiceHelpers
             ? parsed
             : fallback;
     }
+
+    public static async Task<bool> GetBoolSettingAsync(
+        IUnitOfWork unitOfWork,
+        string key,
+        bool fallback,
+        CancellationToken ct)
+    {
+        var setting = await unitOfWork
+            .GetRepository<SystemSetting, Guid>()
+            .GetByIdWithSpecAsync(new SystemSettingsSpecification(key), ct);
+
+        return setting is not null && bool.TryParse(setting.Value, out var parsed)
+            ? parsed
+            : fallback;
+    }
 }
 
 internal sealed class UserByPhoneSpecification(string e164Phone)

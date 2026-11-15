@@ -86,6 +86,16 @@ public sealed class FinanceService(
             }
         };
 
+        var paymentRepo = unitOfWork.GetRepository<Domain.Models.Payments.Payment, Guid>();
+        var payment = await paymentRepo.GetByIdWithSpecAsync(new PaymentByOrderIdSpecification(order.Id, asNoTracking: false), ct);
+        if (payment is { Method: PaymentMethod.Cash, Status: PaymentStatus.Unpaid or PaymentStatus.Pending })
+        {
+            payment.Status = PaymentStatus.Paid;
+            payment.CompletedAt = clock.UtcNow;
+            payment.UpdatedAt = clock.UtcNow;
+            paymentRepo.Update(payment);
+        }
+
         var delivery = await deliveryRepository.GetByOrderIdAsync(order.Id, ct);
         if (delivery?.CourierId is Guid courierId)
         {
@@ -111,6 +121,7 @@ public sealed class FinanceService(
                     AccountId = courierId,
                     OrderId = order.Id,
                     DeliveryId = delivery.Id,
+                    PaymentId = payment?.Id,
                     Kind = LedgerEntryKind.CashCollected,
                     Direction = LedgerDirection.Debit,
                     Amount = collected,

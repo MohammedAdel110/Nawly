@@ -5,10 +5,10 @@ namespace Nawly.Shared.DTOs.Order;
 
 public sealed record PlaceOrderRequestDto(
     Guid? AddressId,
-    FulfilmentType FulfilmentType,
-    PaymentMethod PaymentMethod,
-    string? CouponCode,
-    string? CustomerNote,
+    FulfilmentType FulfilmentType = FulfilmentType.Delivery,
+    PaymentMethod PaymentMethod = PaymentMethod.Cash,
+    string? CouponCode = null,
+    string? CustomerNote = null,
     bool LeaveAtDoor = false,
     Guid? IdempotencyKey = null);
 
