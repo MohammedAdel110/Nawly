@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Nawly.Services;
 using Scalar.AspNetCore;
 
@@ -25,7 +26,12 @@ namespace Nawly.Web
             // 4. Controllers (from Nawly.Presentation)
             // ==========================================
             builder.Services.AddControllers()
-                .AddApplicationPart(typeof(Nawly.Presentation.AssemblyReference).Assembly);
+                .AddApplicationPart(typeof(Nawly.Presentation.AssemblyReference).Assembly)
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(
+                        new JsonStringEnumConverter(namingPolicy: null, allowIntegerValues: false));
+                });
 
             // ==========================================
             // 5. OpenAPI (Development only, per SRS §3.2)

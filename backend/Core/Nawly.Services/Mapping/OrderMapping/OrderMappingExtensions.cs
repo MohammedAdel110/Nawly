@@ -1,5 +1,6 @@
 using Nawly.Domain.Models.Ordering;
 using Nawly.Shared.DTOs.Order;
+using Nawly.Shared.EnumHelper.OrderEnums;
 
 namespace Nawly.Services.Mapping.OrderMapping;
 
@@ -7,7 +8,9 @@ public static class OrderMappingExtensions
 {
     public static OrderItemOptionDto ToDto(this OrderItemOption option) => new(
         option.GroupName,
+        option.GroupNameAr,
         option.OptionName,
+        option.OptionNameAr,
         option.PriceDelta);
 
     public static OrderItemDto ToDto(this OrderItem item) => new(
@@ -47,8 +50,24 @@ public static class OrderMappingExtensions
 
     public static OrderDetailsDto ToDetailsDto(
         this Order order,
+        OrderActorRole viewerRole = OrderActorRole.Customer,
         string? courierFirstName = null,
-        string? courierPhone = null) => new(
+        string? courierPhone = null)
+    {
+        var isPickup = order.FulfilmentType == FulfilmentType.Pickup;
+        var effectiveCourierPhone = viewerRole switch
+        {
+            OrderActorRole.Admin => courierPhone,
+            OrderActorRole.Store => null,
+            _ when order.IsTerminal => null,
+            _ => courierPhone
+        };
+
+        var effectiveConfirmationCode = viewerRole == OrderActorRole.Customer && order.Status == OrderStatus.PickedUp
+            ? order.DeliveryConfirmationCode
+            : null;
+
+        return new(
             order.Id,
             order.OrderNumber,
             order.CustomerId,
@@ -71,13 +90,13 @@ public static class OrderMappingExtensions
             order.LeaveAtDoor,
             order.CustomerName,
             order.CustomerPhone,
-            order.AddressLabel,
-            order.AreaName,
-            order.AddressDescription,
-            order.Building,
-            order.Floor,
-            order.Apartment,
-            order.DeliveryNotes,
+            isPickup ? null : order.AddressLabel,
+            isPickup ? null : order.AreaName,
+            isPickup ? null : order.AddressDescription,
+            isPickup ? null : order.Building,
+            isPickup ? null : order.Floor,
+            isPickup ? null : order.Apartment,
+            isPickup || viewerRole == OrderActorRole.Store ? null : order.DeliveryNotes,
             order.EstimatedReadyAt,
             order.EstimatedDeliveryAt,
             order.PlacedAt,
@@ -87,7 +106,9 @@ public static class OrderMappingExtensions
             order.CancelReasonCode,
             order.CancelReasonText,
             courierFirstName,
-            courierPhone,
+            effectiveCourierPhone,
+            effectiveConfirmationCode,
             order.Items.Select(i => i.ToDto()).ToList(),
             order.StatusHistory.OrderBy(h => h.At).Select(h => h.ToDto()).ToList());
+    }
 }

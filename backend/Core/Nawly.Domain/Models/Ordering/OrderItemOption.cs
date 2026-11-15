@@ -6,6 +6,8 @@ public class OrderItemOption : BaseGuidEntity
 {
     public Guid OrderItemId { get; set; }
     public string GroupName { get; set; } = string.Empty;
+    public string GroupNameAr { get; set; } = string.Empty;
     public string OptionName { get; set; } = string.Empty;
+    public string OptionNameAr { get; set; } = string.Empty;
     public decimal PriceDelta { get; set; }
 }

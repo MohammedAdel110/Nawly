@@ -48,13 +48,17 @@ public sealed class OrderService(
         Guid idempotencyKey,
         CancellationToken ct = default)
     {
-        if (idempotencyKey == Guid.Empty)
+        var effectiveIdempotencyKey = idempotencyKey != Guid.Empty
+            ? idempotencyKey
+            : request.IdempotencyKey ?? Guid.Empty;
+
+        if (effectiveIdempotencyKey == Guid.Empty)
             return Result.Failure<OrderDetailsDto>(Error.Validation("order.idempotency_required", "Idempotency-Key header is required."));
 
         var customer = await ServiceHelpers.ResolveOrCreateCustomerProfileAsync(unitOfWork, userId, ct);
-        var existingOrder = await orderRepository.GetByIdempotencyKeyAsync(customer.Id, idempotencyKey, ct);
+        var existingOrder = await orderRepository.GetByIdempotencyKeyAsync(customer.Id, effectiveIdempotencyKey, ct);
         if (existingOrder is not null)
-            return Result.Success(existingOrder.ToDetailsDto());
+            return Result.Success(existingOrder.ToDetailsDto(OrderActorRole.Customer));
 
         var cartRepo = unitOfWork.GetRepository<CartEntity, Guid>();
         var cart = await cartRepo.GetByIdWithSpecAsync(new ActiveCartByCustomerSpecification(customer.Id), ct);
@@ -128,7 +132,9 @@ public sealed class OrderService(
                 .Select(o => new OrderItemOption
                 {
                     GroupName = o.ProductOption.Group?.Name ?? string.Empty,
+                    GroupNameAr = o.ProductOption.Group?.NameAr ?? string.Empty,
                     OptionName = o.ProductOption.Name,
+                    OptionNameAr = o.ProductOption.NameAr,
                     PriceDelta = o.ProductOption.PriceDelta
                 })
                 .ToList();
@@ -219,7 +225,7 @@ public sealed class OrderService(
             store.Id,
             request.PaymentMethod,
             request.FulfilmentType,
-            idempotencyKey,
+            effectiveIdempotencyKey,
             clock.UtcNow);
 
         var user = await unitOfWork.GetRepository<AppUser, Guid>().GetByIdAsync(userId, ct);
@@ -238,15 +244,32 @@ public sealed class OrderService(
         order.LeaveAtDoor = request.LeaveAtDoor;
         order.CustomerName = user?.FullName ?? "Customer";
         order.CustomerPhone = address?.ContactPhone ?? user?.PhoneNumber ?? string.Empty;
-        order.AddressLabel = address?.Label ?? "Pickup";
-        order.AreaName = address?.Area?.Name ?? store.Area?.Name ?? string.Empty;
-        order.AddressDescription = address?.Description ?? store.AddressText;
-        order.Building = address?.Building;
-        order.Floor = address?.Floor;
-        order.Apartment = address?.Apartment;
-        order.Latitude = address?.Latitude;
-        order.Longitude = address?.Longitude;
-        order.DeliveryNotes = address?.Notes;
+
+        if (request.FulfilmentType == FulfilmentType.Pickup)
+        {
+            order.AddressLabel = string.Empty;
+            order.AreaName = string.Empty;
+            order.AddressDescription = string.Empty;
+            order.Building = null;
+            order.Floor = null;
+            order.Apartment = null;
+            order.Latitude = null;
+            order.Longitude = null;
+            order.DeliveryNotes = null;
+        }
+        else
+        {
+            order.AddressLabel = address?.Label ?? string.Empty;
+            order.AreaName = address?.Area?.Name ?? string.Empty;
+            order.AddressDescription = address?.Description ?? string.Empty;
+            order.Building = address?.Building;
+            order.Floor = address?.Floor;
+            order.Apartment = address?.Apartment;
+            order.Latitude = address?.Latitude;
+            order.Longitude = address?.Longitude;
+            order.DeliveryNotes = address?.Notes;
+        }
+
         order.EstimatedReadyAt = clock.UtcNow.AddMinutes(store.EffectivePrepMinutes);
         order.EstimatedDeliveryAt = clock.UtcNow.AddMinutes(store.EffectivePrepMinutes + travelMinutes);
         order.Store = store;
@@ -254,6 +277,7 @@ public sealed class OrderService(
         if (request.FulfilmentType == FulfilmentType.Delivery)
         {
             var deliveryPin = RandomNumberGenerator.GetInt32(1000, 10000).ToString();
+            order.DeliveryConfirmationCode = deliveryPin;
             order.DeliveryConfirmationCodeHash = ServiceHelpers.HashSecretCode(deliveryPin);
         }
 
@@ -285,7 +309,7 @@ public sealed class OrderService(
             await realtimeNotifier.NotifyNewOrderAsync(store.Id, order.ToSummaryDto(), ct);
 
         await DispatchAndClearAsync(order, ct);
-        return Result.Success(order.ToDetailsDto());
+        return Result.Success(order.ToDetailsDto(OrderActorRole.Customer));
     }
 
     public async Task<Result<PaginationResponse<OrderSummaryDto>>> GetCustomerOrdersAsync(
@@ -371,10 +395,19 @@ public sealed class OrderService(
         if (!isAdmin && !isStoreActor && !isOwner && !isCourier)
             return Result.Failure<OrderDetailsDto>(Error.Forbidden("order.forbidden", "You do not have access to this order."));
 
-        var courierFirstName = orderDelivery?.Courier?.User?.FullName.Split(' ', StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
-        var courierPhone = Domain.ValueObjects.PhoneNumber.MaskRaw(orderDelivery?.Courier?.User?.PhoneNumber);
+        var viewerRole = isAdmin
+            ? OrderActorRole.Admin
+            : isOwner
+                ? OrderActorRole.Customer
+                : isStoreActor
+                    ? OrderActorRole.Store
+                    : OrderActorRole.Courier;
 
-        return Result.Success(order.ToDetailsDto(courierFirstName, courierPhone));
+        var courierFirstName = orderDelivery?.Courier?.User?.FullName.Split(' ', StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
+        var rawCourierPhone = orderDelivery?.Courier?.User?.PhoneNumber;
+        var courierPhone = string.IsNullOrWhiteSpace(rawCourierPhone) ? null : rawCourierPhone;
+
+        return Result.Success(order.ToDetailsDto(viewerRole, courierFirstName, courierPhone));
     }
 
     public async Task<Result<OrderDetailsDto>> AcceptOrderAsync(
@@ -397,7 +430,7 @@ public sealed class OrderService(
         await unitOfWork.SaveChangesAsync(ct);
         await DispatchAndClearAsync(order, ct);
 
-        return Result.Success(order.ToDetailsDto());
+        return Result.Success(order.ToDetailsDto(OrderActorRole.Store));
     }
 
     public async Task<Result<OrderDetailsDto>> RejectOrderAsync(
@@ -419,7 +452,7 @@ public sealed class OrderService(
         await unitOfWork.SaveChangesAsync(ct);
         await DispatchAndClearAsync(order, ct);
 
-        return Result.Success(order.ToDetailsDto());
+        return Result.Success(order.ToDetailsDto(OrderActorRole.Store));
     }
 
     public async Task<Result<OrderDetailsDto>> MarkPreparingAsync(
@@ -440,7 +473,7 @@ public sealed class OrderService(
         await unitOfWork.SaveChangesAsync(ct);
         await DispatchAndClearAsync(order, ct);
 
-        return Result.Success(order.ToDetailsDto());
+        return Result.Success(order.ToDetailsDto(OrderActorRole.Store));
     }
 
     public async Task<Result<OrderDetailsDto>> MarkReadyForPickupAsync(
@@ -464,7 +497,7 @@ public sealed class OrderService(
         if (order.FulfilmentType == FulfilmentType.Delivery && order.Store.DeliveryMode == DeliveryMode.PlatformCourier)
             await deliveryService.CreateForOrderAsync(order.Id, ct);
 
-        return Result.Success(order.ToDetailsDto());
+        return Result.Success(order.ToDetailsDto(OrderActorRole.Store));
     }
 
     public async Task<Result<OrderDetailsDto>> CancelByCustomerAsync(
@@ -487,7 +520,7 @@ public sealed class OrderService(
         await unitOfWork.SaveChangesAsync(ct);
         await DispatchAndClearAsync(order, ct);
 
-        return Result.Success(order.ToDetailsDto());
+        return Result.Success(order.ToDetailsDto(OrderActorRole.Customer));
     }
 
     public async Task<Result<OrderDetailsDto>> AdminChangeStatusAsync(
@@ -504,7 +537,7 @@ public sealed class OrderService(
         Result transition = request.NewStatus switch
         {
             OrderStatus.Cancelled => order.Cancel(adminUserId, OrderActorRole.Admin, reason, request.ReasonText, clock.UtcNow),
-            OrderStatus.Rejected => order.Reject(adminUserId, reason, request.ReasonText, clock.UtcNow),
+            OrderStatus.Rejected => order.Reject(adminUserId, reason, request.ReasonText, clock.UtcNow, OrderActorRole.Admin),
             OrderStatus.Failed => order.MarkFailed(adminUserId, OrderActorRole.Admin, reason, request.ReasonText, clock.UtcNow),
             OrderStatus.Delivered => order.MarkDelivered(adminUserId, OrderActorRole.Admin, null, clock.UtcNow),
             _ => Result.Failure(Error.Validation("order.unsupported_admin_transition", $"Admin transition to '{request.NewStatus}' is not supported."))
@@ -517,7 +550,7 @@ public sealed class OrderService(
         await unitOfWork.SaveChangesAsync(ct);
         await DispatchAndClearAsync(order, ct);
 
-        return Result.Success(order.ToDetailsDto());
+        return Result.Success(order.ToDetailsDto(OrderActorRole.Admin));
     }
 
     public async Task<int> AutoRejectExpiredOrdersAsync(TimeSpan timeout, CancellationToken ct = default)

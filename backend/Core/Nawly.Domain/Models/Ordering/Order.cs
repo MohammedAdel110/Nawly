@@ -63,6 +63,7 @@ public class Order : AggregateRoot
     public OrderActorRole? CancelledBy { get; private set; }
     public CancelReasonCode? CancelReasonCode { get; private set; }
     public string? CancelReasonText { get; private set; }
+    public string? DeliveryConfirmationCode { get; set; }
     public string? DeliveryConfirmationCodeHash { get; set; }
     public Guid IdempotencyKey { get; set; }
     public uint RowVersion { get; set; }
@@ -71,6 +72,22 @@ public class Order : AggregateRoot
     public Store Store { get; set; } = null!;
     public IReadOnlyCollection<OrderItem> Items => _items.AsReadOnly();
     public IReadOnlyCollection<OrderStatusHistory> StatusHistory => _statusHistory.AsReadOnly();
+
+    public static readonly IReadOnlySet<CancelReasonCode> CustomerAllowedCancelReasons = new HashSet<CancelReasonCode>
+    {
+        global::Nawly.Shared.EnumHelper.OrderEnums.CancelReasonCode.CustomerChangedMind,
+        global::Nawly.Shared.EnumHelper.OrderEnums.CancelReasonCode.DuplicateOrder,
+        global::Nawly.Shared.EnumHelper.OrderEnums.CancelReasonCode.Other
+    };
+
+    public static readonly IReadOnlySet<CancelReasonCode> StoreAllowedCancelReasons = new HashSet<CancelReasonCode>
+    {
+        global::Nawly.Shared.EnumHelper.OrderEnums.CancelReasonCode.StoreRejected,
+        global::Nawly.Shared.EnumHelper.OrderEnums.CancelReasonCode.ItemsUnavailable,
+        global::Nawly.Shared.EnumHelper.OrderEnums.CancelReasonCode.StoreTooBusy,
+        global::Nawly.Shared.EnumHelper.OrderEnums.CancelReasonCode.AddressOutOfRange,
+        global::Nawly.Shared.EnumHelper.OrderEnums.CancelReasonCode.Other
+    };
 
     public bool IsTerminal => Status is OrderStatus.Delivered or OrderStatus.Rejected or OrderStatus.Cancelled or OrderStatus.Failed;
 
@@ -149,14 +166,23 @@ public class Order : AggregateRoot
         return Result.Success();
     }
 
-    public Result Reject(Guid actorUserId, CancelReasonCode reasonCode, string? reasonText, DateTimeOffset utcNow)
+    public Result Reject(
+        Guid actorUserId,
+        CancelReasonCode reasonCode,
+        string? reasonText,
+        DateTimeOffset utcNow,
+        OrderActorRole actorRole = OrderActorRole.Store)
     {
         if (Status != OrderStatus.Placed)
             return InvalidTransition(OrderStatus.Rejected);
 
-        Transition(OrderStatus.Rejected, actorUserId, OrderActorRole.Store, reasonCode, reasonText, utcNow);
+        if (actorRole == OrderActorRole.Store && !StoreAllowedCancelReasons.Contains(reasonCode))
+            return Result.Failure(Error.Validation("order.invalid_reject_reason", "The selected rejection reason is not allowed for a store."));
+
+        Transition(OrderStatus.Rejected, actorUserId, actorRole, reasonCode, reasonText, utcNow);
+        DeliveryConfirmationCode = null;
         CancelledAt = utcNow;
-        CancelledBy = OrderActorRole.Store;
+        CancelledBy = actorRole;
         CancelReasonCode = reasonCode;
         CancelReasonText = reasonText;
         Raise(new OrderRejectedEvent(Id, StoreId, CustomerId, reasonCode, reasonText));
@@ -207,6 +233,7 @@ public class Order : AggregateRoot
             return InvalidTransition(OrderStatus.Delivered);
 
         Transition(OrderStatus.Delivered, actorUserId, actorRole, null, null, utcNow);
+        DeliveryConfirmationCode = null;
         DeliveredAt = utcNow;
         if (PaymentMethod == PaymentMethod.Cash)
             PaymentStatus = PaymentStatus.Paid;
@@ -221,6 +248,7 @@ public class Order : AggregateRoot
             return InvalidTransition(OrderStatus.Failed);
 
         Transition(OrderStatus.Failed, actorUserId, actorRole, reasonCode, reasonText, utcNow);
+        DeliveryConfirmationCode = null;
         CancelReasonCode = reasonCode;
         CancelReasonText = reasonText;
         Raise(new OrderFailedEvent(Id, StoreId, CustomerId, reasonText));
@@ -232,6 +260,12 @@ public class Order : AggregateRoot
         if (IsTerminal)
             return InvalidTransition(OrderStatus.Cancelled);
 
+        if (actorRole == OrderActorRole.Customer && !CustomerAllowedCancelReasons.Contains(reasonCode))
+            return Result.Failure(Error.Validation("order.invalid_cancel_reason", "The selected cancellation reason is not allowed for a customer."));
+
+        if (actorRole == OrderActorRole.Store && !StoreAllowedCancelReasons.Contains(reasonCode))
+            return Result.Failure(Error.Validation("order.invalid_cancel_reason", "The selected cancellation reason is not allowed for a store."));
+
         if (actorRole == OrderActorRole.Customer && Status is not (OrderStatus.PendingPayment or OrderStatus.Placed))
             return Result.Failure(Error.Conflict("order.cancellation_requires_approval", "Order can only be cancelled freely before store acceptance."));
 
@@ -240,6 +274,7 @@ public class Order : AggregateRoot
 
         var previous = Status;
         Transition(OrderStatus.Cancelled, actorUserId, actorRole, reasonCode, reasonText, utcNow);
+        DeliveryConfirmationCode = null;
         CancelledAt = utcNow;
         CancelledBy = actorRole;
         CancelReasonCode = reasonCode;
