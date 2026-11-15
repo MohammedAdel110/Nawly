@@ -27,6 +27,7 @@ namespace Nawly.Web
             builder.Services.AddPersistenceServices(builder.Configuration);
             builder.Services.AddApplicationServices();
             builder.Services.AddWebSecurityServices(builder.Configuration, builder.Environment);
+            builder.Services.AddWebRealtimeAndWorkers();
 
             // ==========================================
             // 4. Controllers & Global Validation Filter
@@ -67,6 +68,7 @@ namespace Nawly.Web
             app.UseAuthorization();
 
             app.MapControllers();
+            app.MapNawlyHubs();
 
             app.Run();
         }
