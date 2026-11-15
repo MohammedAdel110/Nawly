@@ -54,10 +54,11 @@ public class Delivery : AggregateRoot
 
     public Result AssignCourier(Guid courierId, DateTimeOffset utcNow)
     {
-        if (Status is not (DeliveryStatus.Unassigned or DeliveryStatus.Offered))
+        if (Status is not (DeliveryStatus.Unassigned or DeliveryStatus.Offered)
+            && !(Status == DeliveryStatus.Assigned && CourierId == courierId))
             return InvalidTransition(DeliveryStatus.Assigned);
 
-        var previous = Status;
+        var previous = Status == DeliveryStatus.Assigned ? DeliveryStatus.Offered : Status;
         CourierId = courierId;
         Status = DeliveryStatus.Assigned;
         AssignedAt = utcNow;
