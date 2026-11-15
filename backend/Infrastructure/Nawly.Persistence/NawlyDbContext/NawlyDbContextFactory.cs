@@ -15,10 +15,19 @@ public sealed class NawlyDbContextFactory : IDesignTimeDbContextFactory<NawlyDbC
         if (!Directory.Exists(webPath))
             webPath = basePath;
 
+        var userSecretsPath = OperatingSystem.IsWindows()
+            ? Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "Microsoft", "UserSecrets", "nawly-web-dev", "secrets.json")
+            : Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                ".microsoft", "usersecrets", "nawly-web-dev", "secrets.json");
+
         var configuration = new ConfigurationBuilder()
             .SetBasePath(webPath)
             .AddJsonFile("appsettings.json", optional: true)
             .AddJsonFile("appsettings.Development.json", optional: true)
+            .AddJsonFile(userSecretsPath, optional: true)
             .AddEnvironmentVariables()
             .Build();
 
