@@ -3,17 +3,21 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Nawly.Abstraction.IServices.Attachment;
 using Nawly.Abstraction.IServices.Catalog;
+using Nawly.Abstraction.IServices.Finance;
 using Nawly.Abstraction.IServices.Order;
 using Nawly.Abstraction.IServices.Review;
 using Nawly.Abstraction.IServices.Store;
 using Nawly.Presentation.Extensions;
+using Nawly.Shared.Common.Params.Finance;
 using Nawly.Shared.Common.Params.Order;
 using Nawly.Shared.Common.Results;
 using Nawly.Shared.DTOs.Attachment;
 using Nawly.Shared.DTOs.Catalog;
+using Nawly.Shared.DTOs.Finance;
 using Nawly.Shared.DTOs.Order;
 using Nawly.Shared.DTOs.Review;
 using Nawly.Shared.DTOs.Store;
+using Nawly.Shared.EnumHelper.FinanceEnums;
 
 namespace Nawly.Presentation.Controllers.StorePortal;
 
@@ -23,6 +27,7 @@ public sealed class StorePortalController(
     IStoreService storeService,
     ICatalogService catalogService,
     IOrderService orderService,
+    IFinanceService financeService,
     IReviewService reviewService,
     IAttachmentService attachmentService) : ApiBaseController
 {
@@ -420,6 +425,55 @@ public sealed class StorePortalController(
             ct);
 
         return HandleResult(result, StatusCodes.Status201Created);
+    }
+
+    [HttpGet("finance/ledger")]
+    public async Task<IActionResult> GetFinanceLedger([FromQuery] Guid? storeId, CancellationToken ct)
+    {
+        if (!TryResolveStoreId(storeId, out var resolvedStoreId, out var errorResult))
+            return errorResult!;
+
+        var result = await financeService.GetLedgerEntriesAsync(LedgerAccountType.Store, resolvedStoreId, ct);
+        return HandleResult(result);
+    }
+
+    [HttpGet("finance/settlements")]
+    public async Task<IActionResult> GetSettlements(
+        [FromQuery] SettlementQueryParams queryParams,
+        [FromQuery] Guid? storeId,
+        CancellationToken ct)
+    {
+        if (!TryResolveStoreId(storeId, out var resolvedStoreId, out var errorResult))
+            return errorResult!;
+
+        queryParams.PartyType = SettlementPartyType.Store;
+        queryParams.PartyId = resolvedStoreId;
+
+        var result = await financeService.GetSettlementsAsync(queryParams, ct);
+        return HandleResult(result);
+    }
+
+    [HttpGet("finance/settlements/{settlementId:guid}")]
+    public async Task<IActionResult> GetSettlementById(
+        Guid settlementId,
+        [FromQuery] Guid? storeId,
+        CancellationToken ct)
+    {
+        if (!TryResolveStoreId(storeId, out var resolvedStoreId, out var errorResult))
+            return errorResult!;
+
+        var result = await financeService.GetSettlementByIdAsync(settlementId, ct);
+        if (result.IsFailure)
+            return HandleResult(result);
+
+        if (result.Value.PartyType != SettlementPartyType.Store || result.Value.PartyId != resolvedStoreId)
+        {
+            return HandleResult(Result.Failure<SettlementDto>(Error.Forbidden(
+                "store.forbidden_settlement_scope",
+                "You do not have permission to view another party's settlement.")));
+        }
+
+        return HandleResult(result);
     }
 
     private bool TryResolveStoreId(Guid? explicitStoreId, out Guid resolvedStoreId, out IActionResult? errorResult)
