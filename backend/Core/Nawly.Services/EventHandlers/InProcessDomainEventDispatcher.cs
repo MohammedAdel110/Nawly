@@ -1,5 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
+using Nawly.Domain.Contracts.UnitOfWorkPattern;
 using Nawly.Domain.Events;
+using Nawly.Domain.Models.Platform;
 
 namespace Nawly.Services.EventHandlers;
 
@@ -7,6 +9,9 @@ public sealed class InProcessDomainEventDispatcher(IServiceProvider serviceProvi
 {
     public async Task DispatchAsync(IEnumerable<IDomainEvent> events, CancellationToken cancellationToken = default)
     {
+        var unitOfWork = serviceProvider.GetService<IUnitOfWork>();
+        var outboxMarked = false;
+
         foreach (var domainEvent in events)
         {
             var eventType = domainEvent.GetType();
@@ -22,6 +27,23 @@ public sealed class InProcessDomainEventDispatcher(IServiceProvider serviceProvi
                     await task;
                 }
             }
+
+            if (unitOfWork is not null)
+            {
+                var outboxRepo = unitOfWork.GetRepository<OutboxMessage, Guid>();
+                var outbox = await outboxRepo.GetByIdAsync(domainEvent.EventId, cancellationToken);
+                if (outbox is not null && outbox.ProcessedAt is null)
+                {
+                    outbox.ProcessedAt = DateTimeOffset.UtcNow;
+                    outbox.Attempts += 1;
+                    outbox.Error = null;
+                    outboxRepo.Update(outbox);
+                    outboxMarked = true;
+                }
+            }
         }
+
+        if (outboxMarked && unitOfWork is not null)
+            await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }
