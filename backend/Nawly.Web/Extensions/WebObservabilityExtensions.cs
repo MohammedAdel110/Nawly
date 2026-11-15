@@ -54,14 +54,24 @@ public static class WebObservabilityExtensions
         if (app.Environment.IsDevelopment())
         {
             app.MapOpenApi();
+
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/openapi/v1.json", "Nawly Delivery Platform API v1");
+                options.RoutePrefix = "swagger";
+                options.DocumentTitle = "Nawly API — Swagger UI";
+                options.EnablePersistAuthorization();
+                options.DisplayRequestDuration();
+            });
+
             app.MapScalarApiReference(options =>
             {
                 options.WithTitle("Nawly Delivery Platform API Reference");
                 options.AddPreferredSecuritySchemes(BearerSchemeId);
             });
 
-            // Opening http://localhost:5082/ directly in a browser opens the Scalar API UI.
-            app.MapGet("/", () => Results.Redirect("/scalar/v1"))
+            // Opening http://localhost:5082/ directly in a browser opens Swagger UI.
+            app.MapGet("/", () => Results.Redirect("/swagger"))
                 .AllowAnonymous()
                 .ExcludeFromDescription();
         }
