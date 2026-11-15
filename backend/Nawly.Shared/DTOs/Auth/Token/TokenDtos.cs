@@ -9,7 +9,13 @@ public sealed record AuthTokenDto(
     string FullName,
     PreferredLanguage PreferredLanguage,
     IReadOnlyList<string> Roles,
-    Guid? StoreId = null);
+    Guid? StoreId = null,
+    string? RefreshToken = null,
+    DateTimeOffset? RefreshTokenExpiresAt = null);
+
+public sealed record RefreshTokenRequestDto(string? RefreshToken = null);
+
+public sealed record LogoutRequestDto(string? RefreshToken = null);
 
 public sealed record SessionDto(
     Guid Id,

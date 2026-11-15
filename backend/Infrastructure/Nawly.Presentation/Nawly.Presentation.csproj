@@ -6,6 +6,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Core\Nawly.Abstraction\Nawly.Abstraction.csproj" />
     <ProjectReference Include="..\..\Core\Nawly.Domain\Nawly.Domain.csproj" />
   </ItemGroup>
