@@ -16,6 +16,16 @@ public sealed class UpsertCartItemDtoValidator : AbstractValidator<UpsertCartIte
     }
 }
 
+public sealed class CartQuoteRequestDtoValidator : AbstractValidator<CartQuoteRequestDto>
+{
+    public CartQuoteRequestDtoValidator()
+    {
+        RuleFor(x => x.FulfilmentType).IsInEnum();
+        RuleFor(x => x.PaymentMethod).IsInEnum();
+        RuleFor(x => x.CouponCode).MaximumLength(40);
+    }
+}
+
 public sealed class PlaceOrderRequestDtoValidator : AbstractValidator<PlaceOrderRequestDto>
 {
     public PlaceOrderRequestDtoValidator()
@@ -45,7 +55,16 @@ public sealed class RejectOrderDtoValidator : AbstractValidator<RejectOrderDto>
 {
     public RejectOrderDtoValidator()
     {
-        RuleFor(x => x.ReasonCode).IsInEnum();
+        RuleFor(x => x.ReasonCode)
+            .IsInEnum()
+            .Must(code => Order.StoreAllowedCancelReasons.Contains(code))
+            .WithMessage("Stores may only select store-applicable rejection reasons.");
+
+        RuleFor(x => x.ReasonText)
+            .NotEmpty()
+            .When(x => x.ReasonCode == CancelReasonCode.Other)
+            .WithMessage("Reason details are required when ReasonCode is Other.");
+
         RuleFor(x => x.ReasonText).MaximumLength(400);
     }
 }
@@ -54,7 +73,28 @@ public sealed class CancelOrderDtoValidator : AbstractValidator<CancelOrderDto>
 {
     public CancelOrderDtoValidator()
     {
-        RuleFor(x => x.ReasonCode).IsInEnum();
+        RuleFor(x => x.ReasonCode)
+            .IsInEnum()
+            .Must(code => Order.CustomerAllowedCancelReasons.Contains(code))
+            .WithMessage("Customers may only select customer-applicable cancellation reasons.");
+
+        RuleFor(x => x.ReasonText)
+            .NotEmpty()
+            .When(x => x.ReasonCode == CancelReasonCode.Other)
+            .WithMessage("Reason details are required when ReasonCode is Other.");
+
         RuleFor(x => x.ReasonText).MaximumLength(400);
+    }
+}
+
+public sealed class AdminChangeOrderStatusDtoValidator : AbstractValidator<AdminChangeOrderStatusDto>
+{
+    public AdminChangeOrderStatusDtoValidator()
+    {
+        RuleFor(x => x.NewStatus).IsInEnum();
+        RuleFor(x => x.ReasonCode)
+            .IsInEnum()
+            .When(x => x.ReasonCode.HasValue);
+        RuleFor(x => x.ReasonText).NotEmpty().MaximumLength(500);
     }
 }

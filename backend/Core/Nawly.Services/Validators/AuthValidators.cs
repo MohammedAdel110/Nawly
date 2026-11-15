@@ -2,6 +2,7 @@ using FluentValidation;
 using Nawly.Domain.ValueObjects;
 using Nawly.Shared.DTOs.Auth.Login;
 using Nawly.Shared.DTOs.Auth.Otp;
+using Nawly.Shared.DTOs.Profile;
 
 namespace Nawly.Services.Validators;
 
@@ -49,5 +50,18 @@ public sealed class LoginRequestDtoValidator : AbstractValidator<LoginRequestDto
             .NotEmpty()
             .MinimumLength(8)
             .MaximumLength(128);
+    }
+}
+
+public sealed class UpdateProfileDtoValidator : AbstractValidator<UpdateProfileDto>
+{
+    public UpdateProfileDtoValidator()
+    {
+        RuleFor(x => x.FullName).NotEmpty().MaximumLength(150);
+        RuleFor(x => x.Email)
+            .EmailAddress()
+            .MaximumLength(150)
+            .When(x => !string.IsNullOrWhiteSpace(x.Email));
+        RuleFor(x => x.PreferredLanguage).IsInEnum();
     }
 }

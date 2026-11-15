@@ -9,14 +9,20 @@ public sealed record PlaceOrderRequestDto(
     PaymentMethod PaymentMethod,
     string? CouponCode,
     string? CustomerNote,
-    bool LeaveAtDoor = false);
+    bool LeaveAtDoor = false,
+    Guid? IdempotencyKey = null);
 
 public sealed record AcceptOrderDto(int PrepMinutes);
 public sealed record RejectOrderDto(CancelReasonCode ReasonCode, string? ReasonText);
 public sealed record CancelOrderDto(CancelReasonCode ReasonCode, string? ReasonText);
 public sealed record AdminChangeOrderStatusDto(OrderStatus NewStatus, CancelReasonCode? ReasonCode, string ReasonText);
 
-public sealed record OrderItemOptionDto(string GroupName, string OptionName, decimal PriceDelta);
+public sealed record OrderItemOptionDto(
+    string GroupName,
+    string GroupNameAr,
+    string OptionName,
+    string OptionNameAr,
+    decimal PriceDelta);
 
 public sealed record OrderItemDto(
     Guid Id,
@@ -76,9 +82,9 @@ public sealed record OrderDetailsDto(
     bool LeaveAtDoor,
     string CustomerName,
     string CustomerPhone,
-    string AddressLabel,
-    string AreaName,
-    string AddressDescription,
+    string? AddressLabel,
+    string? AreaName,
+    string? AddressDescription,
     string? Building,
     string? Floor,
     string? Apartment,
@@ -93,5 +99,6 @@ public sealed record OrderDetailsDto(
     string? CancelReasonText,
     string? CourierFirstName,
     string? CourierPhone,
+    string? DeliveryConfirmationCode,
     IReadOnlyList<OrderItemDto> Items,
     IReadOnlyList<OrderStatusHistoryDto> History);

@@ -3,7 +3,13 @@ using Nawly.Shared.EnumHelper.PaymentEnums;
 
 namespace Nawly.Shared.DTOs.Cart;
 
-public sealed record CartItemOptionDto(Guid ProductOptionId, string GroupName, string OptionName, decimal PriceDelta);
+public sealed record CartItemOptionDto(
+    Guid ProductOptionId,
+    string GroupName,
+    string GroupNameAr,
+    string OptionName,
+    string OptionNameAr,
+    decimal PriceDelta);
 
 public sealed record CartItemDto(
     Guid Id,

@@ -66,3 +66,43 @@ public sealed class UpsertProductDtoValidator : AbstractValidator<UpsertProductD
             .When(x => x.PrepMinutes.HasValue);
     }
 }
+
+public sealed class UpdateStoreSettingsDtoValidator : AbstractValidator<UpdateStoreSettingsDto>
+{
+    public UpdateStoreSettingsDtoValidator()
+    {
+        RuleFor(x => x.Name).NotEmpty().MaximumLength(150);
+        RuleFor(x => x.NameAr).NotEmpty().MaximumLength(150);
+        RuleFor(x => x.Description).MaximumLength(1000);
+        RuleFor(x => x.DescriptionAr).MaximumLength(1000);
+
+        RuleFor(x => x.Phone)
+            .NotEmpty()
+            .Must(p => PhoneNumber.TryParseEgyptianMobile(p, out _))
+            .WithMessage("Store phone must be a valid Egyptian mobile number.");
+
+        RuleFor(x => x.AddressText).NotEmpty().MaximumLength(400);
+        RuleFor(x => x.Latitude).InclusiveBetween(-90d, 90d).When(x => x.Latitude.HasValue);
+        RuleFor(x => x.Longitude).InclusiveBetween(-180d, 180d).When(x => x.Longitude.HasValue);
+        RuleFor(x => x.DeliveryMode).IsInEnum();
+        RuleFor(x => x.MinOrderAmount).GreaterThanOrEqualTo(0m);
+        RuleFor(x => x.DefaultPrepMinutes).InclusiveBetween(5, 180);
+        RuleFor(x => x.BusyExtraMinutes).InclusiveBetween(0, 120);
+    }
+}
+
+public sealed class AddStoreStaffDtoValidator : AbstractValidator<AddStoreStaffDto>
+{
+    public AddStoreStaffDtoValidator()
+    {
+        RuleFor(x => x.FullName).NotEmpty().MaximumLength(150);
+
+        RuleFor(x => x.PhoneNumber)
+            .NotEmpty()
+            .Must(p => PhoneNumber.TryParseEgyptianMobile(p, out _))
+            .WithMessage("Staff phone number must be a valid Egyptian mobile number.");
+
+        RuleFor(x => x.Password).NotEmpty().MinimumLength(8).MaximumLength(128);
+        RuleFor(x => x.StoreRole).IsInEnum();
+    }
+}

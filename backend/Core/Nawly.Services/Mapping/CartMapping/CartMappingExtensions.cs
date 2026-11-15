@@ -8,7 +8,9 @@ public static class CartMappingExtensions
     public static CartItemOptionDto ToDto(this CartItemOption option) => new(
         option.ProductOptionId,
         option.ProductOption?.Group?.Name ?? string.Empty,
+        option.ProductOption?.Group?.NameAr ?? string.Empty,
         option.ProductOption?.Name ?? string.Empty,
+        option.ProductOption?.NameAr ?? string.Empty,
         option.ProductOption?.PriceDelta ?? 0m);
 
     public static CartItemDto ToDto(this CartItem item)
