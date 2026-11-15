@@ -8,6 +8,9 @@
     <Project Path="Infrastructure/Nawly.Persistence/Nawly.Persistence.csproj" />
     <Project Path="Infrastructure/Nawly.Presentation/Nawly.Presentation.csproj" />
   </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Tests/Nawly.Tests/Nawly.Tests.csproj" />
+  </Folder>
   <Project Path="Nawly.Shared/Nawly.Shared.csproj" />
   <Project Path="Nawly.Web/Nawly.Web.csproj" />
 </Solution>
