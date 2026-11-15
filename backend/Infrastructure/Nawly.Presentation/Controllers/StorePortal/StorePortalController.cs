@@ -3,12 +3,15 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Nawly.Abstraction.IServices.Attachment;
 using Nawly.Abstraction.IServices.Catalog;
+using Nawly.Abstraction.IServices.Order;
 using Nawly.Abstraction.IServices.Review;
 using Nawly.Abstraction.IServices.Store;
 using Nawly.Presentation.Extensions;
+using Nawly.Shared.Common.Params.Order;
 using Nawly.Shared.Common.Results;
 using Nawly.Shared.DTOs.Attachment;
 using Nawly.Shared.DTOs.Catalog;
+using Nawly.Shared.DTOs.Order;
 using Nawly.Shared.DTOs.Review;
 using Nawly.Shared.DTOs.Store;
 
@@ -19,6 +22,7 @@ namespace Nawly.Presentation.Controllers.StorePortal;
 public sealed class StorePortalController(
     IStoreService storeService,
     ICatalogService catalogService,
+    IOrderService orderService,
     IReviewService reviewService,
     IAttachmentService attachmentService) : ApiBaseController
 {
@@ -29,6 +33,98 @@ public sealed class StorePortalController(
             return errorResult!;
 
         var result = await storeService.GetDashboardAsync(resolvedStoreId, ct);
+        return HandleResult(result);
+    }
+
+    [HttpGet("orders")]
+    public async Task<IActionResult> GetOrders(
+        [FromQuery] OrderQueryParams queryParams,
+        [FromQuery] Guid? storeId,
+        CancellationToken ct)
+    {
+        if (!TryResolveStoreId(storeId, out var resolvedStoreId, out var errorResult))
+            return errorResult!;
+
+        var result = await orderService.GetStoreOrdersAsync(resolvedStoreId, queryParams, ct);
+        return HandleResult(result);
+    }
+
+    [HttpGet("orders/{orderId:guid}")]
+    public async Task<IActionResult> GetOrderDetails(Guid orderId, [FromQuery] Guid? storeId, CancellationToken ct)
+    {
+        if (!TryGetAuthenticatedUserId(out var userId))
+            return UnauthorizedProblem();
+
+        if (!TryResolveStoreId(storeId, out var resolvedStoreId, out var errorResult))
+            return errorResult!;
+
+        var result = await orderService.GetOrderDetailsAsync(
+            orderId,
+            userId,
+            CurrentUser.Roles,
+            resolvedStoreId,
+            ct);
+
+        return HandleResult(result);
+    }
+
+    [HttpPost("orders/{orderId:guid}/accept")]
+    public async Task<IActionResult> AcceptOrder(
+        Guid orderId,
+        [FromBody] AcceptOrderDto request,
+        [FromQuery] Guid? storeId,
+        CancellationToken ct)
+    {
+        if (!TryGetAuthenticatedUserId(out var userId))
+            return UnauthorizedProblem();
+
+        if (!TryResolveStoreId(storeId, out var resolvedStoreId, out var errorResult))
+            return errorResult!;
+
+        var result = await orderService.AcceptOrderAsync(resolvedStoreId, orderId, userId, request, ct);
+        return HandleResult(result);
+    }
+
+    [HttpPost("orders/{orderId:guid}/reject")]
+    public async Task<IActionResult> RejectOrder(
+        Guid orderId,
+        [FromBody] RejectOrderDto request,
+        [FromQuery] Guid? storeId,
+        CancellationToken ct)
+    {
+        if (!TryGetAuthenticatedUserId(out var userId))
+            return UnauthorizedProblem();
+
+        if (!TryResolveStoreId(storeId, out var resolvedStoreId, out var errorResult))
+            return errorResult!;
+
+        var result = await orderService.RejectOrderAsync(resolvedStoreId, orderId, userId, request, ct);
+        return HandleResult(result);
+    }
+
+    [HttpPost("orders/{orderId:guid}/preparing")]
+    public async Task<IActionResult> MarkPreparing(Guid orderId, [FromQuery] Guid? storeId, CancellationToken ct)
+    {
+        if (!TryGetAuthenticatedUserId(out var userId))
+            return UnauthorizedProblem();
+
+        if (!TryResolveStoreId(storeId, out var resolvedStoreId, out var errorResult))
+            return errorResult!;
+
+        var result = await orderService.MarkPreparingAsync(resolvedStoreId, orderId, userId, ct);
+        return HandleResult(result);
+    }
+
+    [HttpPost("orders/{orderId:guid}/ready")]
+    public async Task<IActionResult> MarkReadyForPickup(Guid orderId, [FromQuery] Guid? storeId, CancellationToken ct)
+    {
+        if (!TryGetAuthenticatedUserId(out var userId))
+            return UnauthorizedProblem();
+
+        if (!TryResolveStoreId(storeId, out var resolvedStoreId, out var errorResult))
+            return errorResult!;
+
+        var result = await orderService.MarkReadyForPickupAsync(resolvedStoreId, orderId, userId, ct);
         return HandleResult(result);
     }
 

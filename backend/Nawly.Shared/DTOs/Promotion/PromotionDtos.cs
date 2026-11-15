@@ -38,6 +38,12 @@ public sealed record CouponValidationDto(
     decimal DiscountAmount,
     string? FailureReason = null);
 
+public sealed record ValidateCouponRequestDto(
+    Guid StoreId,
+    decimal Subtotal,
+    decimal DeliveryFee,
+    string Code);
+
 public sealed record BannerDto(
     Guid Id,
     string Title,
