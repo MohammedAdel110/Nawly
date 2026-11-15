@@ -37,6 +37,10 @@ public sealed class PaymentService(
         Guid idempotencyKey,
         CancellationToken ct = default)
     {
+        var onlineEnabled = await ServiceHelpers.GetBoolSettingAsync(unitOfWork, "Payments:OnlinePaymentsEnabled", false, ct);
+        if (!onlineEnabled)
+            return Result.Failure<InitiatePaymentResponseDto>(Error.Unprocessable("payment.online_disabled", "Online payments are currently disabled; only Cash is supported."));
+
         var order = await orderRepository.GetByIdWithSpecAsync(new OrderWithDetailsSpecification(orderId), ct);
         if (order is null)
             return Result.Failure<InitiatePaymentResponseDto>(Error.NotFound("payment.order_not_found", "Order not found."));

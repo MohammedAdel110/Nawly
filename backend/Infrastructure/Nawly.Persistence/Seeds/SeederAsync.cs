@@ -90,7 +90,8 @@ public static class SeederAsync
             ("Dispatch:OfferValiditySeconds", "30", "int", "Seconds a courier delivery offer remains open before expiring."),
             ("Dispatch:MaxWaves", "3", "int", "Maximum automatic dispatch waves before escalating to operations."),
             ("Order:StoreAcceptTimeoutMinutes", "5", "int", "Minutes a store has to accept a newly placed order before auto-cancel."),
-            ("Courier:MaxCashOnHandLimitEgp", "2000", "decimal", "COD cash threshold requiring courier settlement before further COD runs.")
+            ("Courier:MaxCashOnHandLimitEgp", "2000", "decimal", "COD cash threshold requiring courier settlement before further COD runs."),
+            ("Payments:OnlinePaymentsEnabled", "false", "bool", "Whether online payment methods (Card/Wallet) are enabled at checkout. Initially false (Cash only).")
         };
 
         var existingKeys = await dbContext.SystemSettings
