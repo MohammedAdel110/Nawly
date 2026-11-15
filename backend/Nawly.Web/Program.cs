@@ -4,7 +4,6 @@ using Nawly.Presentation.Filters;
 using Nawly.Services;
 using Nawly.Web.Extensions;
 using Nawly.Web.Middleware;
-using Scalar.AspNetCore;
 
 namespace Nawly.Web
 {
@@ -41,22 +40,19 @@ namespace Nawly.Web
                 });
 
             // ==========================================
-            // 5. OpenAPI (Development only, per SRS §3.2)
+            // 5. OpenAPI (Development only, per SRS §3.2) & Health Checks
             // ==========================================
-            builder.Services.AddOpenApi();
+            builder.Services.AddWebObservabilityServices();
 
             var app = builder.Build();
 
             app.UseMiddleware<CorrelationIdMiddleware>();
             app.UseMiddleware<GlobalExceptionMiddleware>();
+            app.UseMiddleware<SecurityHeadersMiddleware>();
 
             await app.Services.SeedDatabaseAsync();
 
-            if (app.Environment.IsDevelopment())
-            {
-                app.MapOpenApi();
-                app.MapScalarApiReference();
-            }
+            app.MapNawlyObservabilityEndpoints();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
