@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Nawly.Abstraction.IServices.Catalog;
 using Nawly.Abstraction.IServices.Geography;
+using Nawly.Abstraction.IServices.Promotion;
 using Nawly.Abstraction.IServices.Review;
 using Nawly.Abstraction.IServices.Store;
 using Nawly.Shared.Common.Params.Catalog;
@@ -17,8 +18,17 @@ public sealed class DiscoveryController(
     IGeographyService geographyService,
     IStoreService storeService,
     ICatalogService catalogService,
-    IReviewService reviewService) : ApiBaseController
+    IReviewService reviewService,
+    IPromotionService promotionService) : ApiBaseController
 {
+    [AllowAnonymous]
+    [HttpGet("banners")]
+    public async Task<IActionResult> GetBanners(CancellationToken ct)
+    {
+        var result = await promotionService.GetActiveBannersAsync(ct);
+        return HandleResult(result);
+    }
+
     [AllowAnonymous]
     [HttpGet("zones")]
     public async Task<IActionResult> GetZones(CancellationToken ct)
