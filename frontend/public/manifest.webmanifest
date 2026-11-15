@@ -1,0 +1,21 @@
+{
+  "name": "نوى — كل طلباتك لحد عندك | NAWA",
+  "short_name": "نوى | NAWA",
+  "description": "نوى (NAWA) — كل طلباتك لحد عندك. اطلب من محلات نوى وتابع توصيلك لحظة بلحظة",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "dir": "rtl",
+  "lang": "ar",
+  "theme_color": "#006874",
+  "background_color": "#FBFDFD",
+  "icons": [
+    {
+      "src": "/icons/nawa-logo.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

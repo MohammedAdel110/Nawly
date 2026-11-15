@@ -1,0 +1,488 @@
+<!DOCTYPE html><html lang="ar" dir="rtl"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مركز المساعدة والشروط القانونية — ناولي</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'accent': '#B45309',
+        'success': '#15803D',
+        'error': '#BA1A1A',
+        'warning': '#D97706',
+        'light-primary': '#006874',
+        'light-on-primary': '#FFFFFF',
+        'light-primary-container': '#97F0FF',
+        'light-on-primary-container': '#001F24',
+        'light-secondary': '#4A6267',
+        'light-on-secondary': '#FFFFFF',
+        'light-secondary-container': '#CCE8ED',
+        'light-on-secondary-container': '#051F23',
+        'light-surface': '#FBFDFD',
+        'light-on-surface': '#191C1D',
+        'light-surface-variant': '#DBE4E6',
+        'light-on-surface-variant': '#3F484A',
+        'light-outline': '#6F797B',
+        'light-outline-variant': '#BFC8CA',
+        'dark-primary': '#4FD8EB',
+        'dark-on-primary': '#00363D',
+        'dark-primary-container': '#004F58',
+        'dark-on-primary-container': '#97F0FF',
+        'dark-secondary': '#B0CBD0',
+        'dark-on-secondary': '#1B3439',
+        'dark-secondary-container': '#324B4F',
+        'dark-on-secondary-container': '#CCE8ED',
+        'dark-surface': '#191C1D',
+        'dark-on-surface': '#E1E3E3',
+        'dark-surface-variant': '#3F484A',
+        'dark-on-surface-variant': '#BFC8CA',
+        'dark-outline': '#899294',
+        'dark-outline-variant': '#3F484A',
+      },
+      borderRadius: {
+        'sm': '6px',
+        'DEFAULT': '10px',
+        'md': '12px',
+        'lg': '16px',
+        'xl': '20px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '48px',
+        'page-margin': '32px',
+      },
+      fontFamily: {
+        'display': ['"Cairo"', 'sans-serif'],
+        'headline': ['"Cairo"', 'sans-serif'],
+        'body': ['"Tajawal"', 'sans-serif'],
+        'label': ['"Cairo"', 'sans-serif'],
+        'code': ['"Source Code Pro"', 'monospace'],
+      },
+      fontSize: {
+        'display-lg': ['40px', { lineHeight: '48px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'display-lg-mobile': ['28px', { lineHeight: '36px', fontWeight: '700' }],
+        'headline-xl': ['34px', { lineHeight: '42px', fontWeight: '700' }],
+        'headline-xl-mobile': ['26px', { lineHeight: '34px', fontWeight: '700' }],
+        'headline-lg': ['28px', { lineHeight: '36px', fontWeight: '600' }],
+        'headline-lg-mobile': ['22px', { lineHeight: '30px', fontWeight: '600' }],
+        'headline-md': ['22px', { lineHeight: '30px', fontWeight: '600' }],
+        'headline-sm': ['18px', { lineHeight: '26px', fontWeight: '600' }],
+        'body-lg': ['18px', { lineHeight: '28px', fontWeight: '400' }],
+        'body-md': ['16px', { lineHeight: '24px', fontWeight: '400' }],
+        'body-sm': ['14px', { lineHeight: '20px', fontWeight: '400' }],
+        'label-lg': ['16px', { lineHeight: '24px', fontWeight: '600' }],
+        'label-md': ['14px', { lineHeight: '20px', fontWeight: '600' }],
+        'label-sm': ['12px', { lineHeight: '16px', fontWeight: '500' }],
+        'code-md': ['16px', { lineHeight: '22px', fontWeight: '600' }],
+      },
+      transitionDuration: {
+        'state-change': '120ms',
+        'surface-enter': '220ms',
+        'surface-exit': '140ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'ease-out',
+        'surface-enter': 'cubic-bezier(0.16, 1, 0.3, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&amp;family=Tajawal:wght@400;500;700&amp;family=Source+Code+Pro:wght@600;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined { display: inline-block; width: 1em; height: 1em; line-height: 1 !important; box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle; }
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+<body class="bg-light-surface text-light-on-surface min-h-[1024px] flex flex-col font-body antialiased selection:bg-light-primary-container selection:text-light-on-primary-container" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+  <!-- Desktop Header -->
+  <header class="w-full bg-white border-b border-light-outline-variant/50 sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <a href="../signin/CustomerSignIn.html" class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-xl bg-light-primary flex items-center justify-center text-white shadow-sm shadow-light-primary/20">
+          <span class="material-symbols-outlined text-2xl" style="font-variation-settings: &#39;FILL&#39; 1;">help_center</span>
+        </div>
+        <div class="flex flex-col">
+          <div class="flex items-baseline gap-1.5">
+            <span class="font-headline font-extrabold text-2xl text-light-primary tracking-tight">ناولي</span>
+            <span class="text-xs font-semibold text-light-secondary px-2 py-0.5 rounded-full bg-light-secondary-container/50">المساعدة والشفافية</span>
+          </div>
+          <span class="text-xs text-light-on-surface-variant font-medium">الأسئلة الشائعة وشروط الخدمة لأهالي نوى</span>
+        </div>
+      </a>
+
+      <!-- Tab Switcher (Help Center / Terms & Privacy / 404 System Preview) -->
+      <div class="flex items-center gap-2 bg-light-surface-variant/40 p-1.5 rounded-xl border border-light-outline-variant/50">
+        <button id="tab-btn-help" onclick="switchView(&#39;help&#39;)" class="px-4 py-2 rounded-lg font-headline text-label-md font-bold transition-all bg-white text-light-primary shadow-sm">
+          مركز المساعدة والدعم
+        </button>
+        <button id="tab-btn-terms" onclick="switchView(&#39;terms&#39;)" class="px-4 py-2 rounded-lg font-headline text-label-md font-semibold text-light-on-surface-variant hover:text-light-on-surface transition-all">
+          الشروط والخصوصية
+        </button>
+        <button id="tab-btn-404" onclick="switchView(&#39;404&#39;)" class="px-4 py-2 rounded-lg font-headline text-label-md font-semibold text-light-on-surface-variant hover:text-light-on-surface transition-all">
+          معاينة خطأ 404
+        </button>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <a href="../signin/CustomerSignIn.html" class="inline-flex items-center gap-1.5 text-light-primary hover:underline font-headline text-label-md font-bold">
+          <span class="material-symbols-outlined text-lg">login</span>
+          <span>تسجيل الدخول</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= VIEW 1: HELP CENTER (/help) ================= -->
+  <main id="view-help" class="view-panel flex-1 max-w-7xl w-full mx-auto px-6 py-10 space-y-12">
+    
+    <!-- Hero Support Banner with WhatsApp & Call Button -->
+    <div class="bg-gradient-to-r from-light-primary via-teal-800 to-light-secondary rounded-2xl p-8 sm:p-10 text-white shadow-lg flex flex-col lg:flex-row items-center justify-between gap-8">
+      <div class="space-y-3 max-w-2xl text-right">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 text-white text-xs font-headline font-bold">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          <span>فريق دعم ناولي بالقرية متاح من 8 صباحًا حتى 1 بعد منتصف الليل</span>
+        </div>
+        <h1 class="font-headline font-extrabold text-display-lg text-white">إزاي نقدر نساعدك في ناولي؟</h1>
+        <p class="text-white/90 text-body-lg leading-relaxed">
+          سواء كان استفسار عن طلبك الحالي، طريقة الدفع كاش، أو الرغبة في إضافة محلك لقائمتنا في قرية نوى.. فريقنا المحلي موجود دائمًا لخدمتك.
+        </p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row lg:flex-col gap-3.5 shrink-0 w-full lg:w-auto">
+        <!-- WhatsApp CTA -->
+        <a href="https://wa.me/201024567890" target="_blank" class="px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-headline text-label-lg font-bold flex items-center justify-center gap-2.5 shadow-md transition-all">
+          <span class="material-symbols-outlined text-2xl">chat</span>
+          <span>محادثة واتساب فورية مع الدعم</span>
+        </a>
+
+        <!-- Phone Call CTA -->
+        <a href="tel:01024567890" class="px-6 py-3.5 rounded-xl bg-white/15 hover:bg-white/25 border border-white/30 text-white font-headline text-label-lg font-bold flex items-center justify-center gap-2.5 transition-all">
+          <span class="material-symbols-outlined text-2xl">call</span>
+          <span dir="ltr" class="font-code font-bold">010 2456 7890</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- 2-Column FAQ Accordion Grid (Ordering, Payment, Cancellations, Delivery) -->
+    <div class="space-y-6">
+      <div class="border-b border-light-outline-variant/60 pb-4 flex items-center justify-between">
+        <div>
+          <h2 class="font-headline font-extrabold text-headline-xl text-light-on-surface">الأسئلة الشائعة في قرية نوى</h2>
+          <p class="text-body-md text-light-on-surface-variant mt-1">إجابات واضحة ومباشرة عن كل ما يخص الطلب والتوصيل والأسعار</p>
+        </div>
+        <span class="text-xs font-headline font-semibold text-light-primary px-3 py-1 rounded-full bg-light-primary-container/40">
+          محدث لشهر نوفمبر 2026
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+        
+        <!-- Category 1: Ordering (الطلب وتجهيز الأوردر) -->
+        <div class="bg-white rounded-2xl border border-light-outline-variant/80 p-6 shadow-sm space-y-4">
+          <div class="flex items-center gap-3 border-b border-light-outline-variant/40 pb-3">
+            <span class="w-10 h-10 rounded-xl bg-light-primary/10 text-light-primary flex items-center justify-center">
+              <span class="material-symbols-outlined text-2xl">shopping_cart</span>
+            </span>
+            <h3 class="font-headline text-headline-sm font-bold text-light-on-surface">1. الطلب واختيار المحلات</h3>
+          </div>
+
+          <details class="group p-4 rounded-xl bg-light-surface-variant/20 border border-light-outline-variant/50 open:bg-white open:shadow-sm" open>
+            <summary class="font-headline text-label-lg font-bold text-light-on-surface cursor-pointer flex items-center justify-between">
+              <span>هل أسعار المنتجات في ناولي نفس أسعار المحل بالقرية؟</span>
+              <span class="material-symbols-outlined text-xl group-open:rotate-180 transition-transform">expand_more</span>
+            </summary>
+            <p class="text-body-sm text-light-on-surface-variant mt-3 leading-relaxed border-t border-light-outline-variant/30 pt-3">
+              نعم، تمامًا! أسعار جميع الوجبات والمخبوزات والسلع في تطبيق ناولي مطابقة لأسعار المحل الفعلية بدون أي زيادة، ولا توجد أي مصاريف إضافية سوى رسوم التوصيل المحددة للكابتن.
+            </p>
+          </details>
+
+          <details class="group p-4 rounded-xl bg-light-surface-variant/20 border border-light-outline-variant/50 open:bg-white open:shadow-sm">
+            <summary class="font-headline text-label-lg font-bold text-light-on-surface cursor-pointer flex items-center justify-between">
+              <span>هل يمكنني الطلب من أكثر من محل في نفس الأوردر؟</span>
+              <span class="material-symbols-outlined text-xl group-open:rotate-180 transition-transform">expand_more</span>
+            </summary>
+            <p class="text-body-sm text-light-on-surface-variant mt-3 leading-relaxed border-t border-light-outline-variant/30 pt-3">
+              كل محل له سلة طلبات وتجهيز منفصل لضمان وصول الطعام طازجًا وساخنًا في وقته، ولكن يمكنك إتمام طلبين في نفس الوقت وسيتولى كباتن القرية توصيلهما لمنزلك.
+            </p>
+          </details>
+        </div>
+
+        <!-- Category 2: Payment & Money (الدفع والأموال) -->
+        <div class="bg-white rounded-2xl border border-light-outline-variant/80 p-6 shadow-sm space-y-4">
+          <div class="flex items-center gap-3 border-b border-light-outline-variant/40 pb-3">
+            <span class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center">
+              <span class="material-symbols-outlined text-2xl">payments</span>
+            </span>
+            <h3 class="font-headline text-headline-sm font-bold text-light-on-surface">2. الدفع كاش والمبالغ المالية</h3>
+          </div>
+
+          <details class="group p-4 rounded-xl bg-light-surface-variant/20 border border-light-outline-variant/50 open:bg-white open:shadow-sm" open>
+            <summary class="font-headline text-label-lg font-bold text-light-on-surface cursor-pointer flex items-center justify-between">
+              <span>إزاي بدفع تمن الطلب ومصاريف التوصيل؟</span>
+              <span class="material-symbols-outlined text-xl group-open:rotate-180 transition-transform">expand_more</span>
+            </summary>
+            <p class="text-body-sm text-light-on-surface-variant mt-3 leading-relaxed border-t border-light-outline-variant/30 pt-3">
+              الدفع نقدًا بالكامل (كاش عند الاستلام). يظهر لك إجمالي الحساب بالجنيه المصري (EGP) بدقة في شاشة تأكيد الطلب، وعندما يصل الكابتن لباب منزلك تسلمه المبلغ نقدًا وتستلم طلبك وإيصالك.
+            </p>
+          </details>
+
+          <details class="group p-4 rounded-xl bg-light-surface-variant/20 border border-light-outline-variant/50 open:bg-white open:shadow-sm">
+            <summary class="font-headline text-label-lg font-bold text-light-on-surface cursor-pointer flex items-center justify-between">
+              <span>هل سيتوفر الدفع بفودافون كاش أو بطاقة فيزا لاحقًا؟</span>
+              <span class="material-symbols-outlined text-xl group-open:rotate-180 transition-transform">expand_more</span>
+            </summary>
+            <p class="text-body-sm text-light-on-surface-variant mt-3 leading-relaxed border-t border-light-outline-variant/30 pt-3">
+              نعم، شاشات الدفع الإلكتروني والمحافظ الإلكترونية مجهزة برمجياً وسيتم إتاحتها للمستخدمين في مرحلة التحديث القادمة.
+            </p>
+          </details>
+        </div>
+
+        <!-- Category 3: Delivery (التوصيل والمناطق) -->
+        <div class="bg-white rounded-2xl border border-light-outline-variant/80 p-6 shadow-sm space-y-4">
+          <div class="flex items-center gap-3 border-b border-light-outline-variant/40 pb-3">
+            <span class="w-10 h-10 rounded-xl bg-amber-100 text-amber-900 flex items-center justify-center">
+              <span class="material-symbols-outlined text-2xl">moped</span>
+            </span>
+            <h3 class="font-headline text-headline-sm font-bold text-light-on-surface">3. مناطق التوصيل والسرعة</h3>
+          </div>
+
+          <details class="group p-4 rounded-xl bg-light-surface-variant/20 border border-light-outline-variant/50 open:bg-white open:shadow-sm" open>
+            <summary class="font-headline text-label-lg font-bold text-light-on-surface cursor-pointer flex items-center justify-between">
+              <span>هل التوصيل يغطي العزب والبيوت البعيدة عن السنتر؟</span>
+              <span class="material-symbols-outlined text-xl group-open:rotate-180 transition-transform">expand_more</span>
+            </summary>
+            <p class="text-body-sm text-light-on-surface-variant mt-3 leading-relaxed border-t border-light-outline-variant/30 pt-3">
+              نعم، ناولي تغطي قرية نوى بالكامل بالإضافة إلى عزبة البرنس، منطقة المحطة، وحوض المقابر. كباتن ناولي من شباب القرية ويعرفون كل الشوارع والحارات بالاسم.
+            </p>
+          </details>
+        </div>
+
+        <!-- Category 4: Cancellations (الإلغاء والشكاوى) -->
+        <div class="bg-white rounded-2xl border border-light-outline-variant/80 p-6 shadow-sm space-y-4">
+          <div class="flex items-center gap-3 border-b border-light-outline-variant/40 pb-3">
+            <span class="w-10 h-10 rounded-xl bg-red-100 text-error flex items-center justify-center">
+              <span class="material-symbols-outlined text-2xl">cancel</span>
+            </span>
+            <h3 class="font-headline text-headline-sm font-bold text-light-on-surface">4. الإلغاء والشكاوى واسترجاع الطلب</h3>
+          </div>
+
+          <details class="group p-4 rounded-xl bg-light-surface-variant/20 border border-light-outline-variant/50 open:bg-white open:shadow-sm" open>
+            <summary class="font-headline text-label-lg font-bold text-light-on-surface cursor-pointer flex items-center justify-between">
+              <span>هل يمكنني إلغاء الأوردر بعد تأكيده؟</span>
+              <span class="material-symbols-outlined text-xl group-open:rotate-180 transition-transform">expand_more</span>
+            </summary>
+            <p class="text-body-sm text-light-on-surface-variant mt-3 leading-relaxed border-t border-light-outline-variant/30 pt-3">
+              يمكنك إلغاء الطلب بنقرة واحدة خلال أول دقيقتين أو قبل أن يبدأ المحل في تجهيز الوجبة فعليًا. في حال وجود أي مشكلة بعد الاستلام، تواصل معنا مباشرة عبر واتساب لحل المشكلة فورًا.
+            </p>
+          </details>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= VIEW 2: TERMS & PRIVACY (/terms) ================= -->
+  <main id="view-terms" class="view-panel flex-1 max-w-7xl w-full mx-auto px-6 py-10 hidden">
+    
+    <div class="border-b border-light-outline-variant/60 pb-6 mb-8">
+      <span class="text-xs font-semibold text-light-primary uppercase tracking-wider block font-headline mb-1">الوثائق القانونية الرسمية</span>
+      <h1 class="font-headline font-extrabold text-display-lg text-light-on-surface">الشروط والأحكام وسياسة الخصوصية</h1>
+      <p class="text-body-md text-light-on-surface-variant mt-1">تاريخ آخر تحديث: 15 نوفمبر 2026 — ساري لجميع مستخدمي منصة ناولي بنوى، القليوبية</p>
+    </div>
+
+    <!-- Two-column legal layout with Sticky Left Table of Contents in RTL -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+      
+      <!-- Right sticky TOC in RTL (4 cols) -->
+      <aside class="lg:col-span-4 sticky top-28 bg-white rounded-2xl border border-light-outline-variant/80 p-6 shadow-sm space-y-4">
+        <h3 class="font-headline text-headline-sm font-bold text-light-on-surface pb-3 border-b border-light-outline-variant/40 flex items-center gap-2">
+          <span class="material-symbols-outlined text-light-primary">menu_book</span>
+          <span>فهرس البنود والوثيقة</span>
+        </h3>
+        
+        <nav class="space-y-1 text-body-sm">
+          <a href="#term-1" class="toc-link block px-3 py-2 rounded-lg font-headline font-semibold text-light-primary bg-light-primary-container/30 transition-colors">
+            1. تمهيد وطبيعة عمل منصة ناولي
+          </a>
+          <a href="#term-2" class="toc-link block px-3 py-2 rounded-lg font-headline text-light-on-surface-variant hover:text-light-primary hover:bg-light-surface-variant/40 transition-colors">
+            2. طلبات الشراء والدفع نقدًا (كاش)
+          </a>
+          <a href="#term-3" class="toc-link block px-3 py-2 rounded-lg font-headline text-light-on-surface-variant hover:text-light-primary hover:bg-light-surface-variant/40 transition-colors">
+            3. مسؤوليات كباتن التوصيل
+          </a>
+          <a href="#term-4" class="toc-link block px-3 py-2 rounded-lg font-headline text-light-on-surface-variant hover:text-light-primary hover:bg-light-surface-variant/40 transition-colors">
+            4. شروط المتاجر وأسعار الأصناف
+          </a>
+          <a href="#term-5" class="toc-link block px-3 py-2 rounded-lg font-headline text-light-on-surface-variant hover:text-light-primary hover:bg-light-surface-variant/40 transition-colors">
+            5. سياسة الخصوصية وسرية أرقام الهواتف
+          </a>
+          <a href="#term-6" class="toc-link block px-3 py-2 rounded-lg font-headline text-light-on-surface-variant hover:text-light-primary hover:bg-light-surface-variant/40 transition-colors">
+            6. الإلغاء والشكاوى وحل النزاعات
+          </a>
+        </nav>
+
+        <div class="pt-4 border-t border-light-outline-variant/50 text-xs text-light-on-surface-variant">
+          لأي استفسار قانوني يرجى مراسلة: <br>
+          <a href="mailto:legal@nawly.eg" class="text-light-primary font-code font-bold underline" dir="ltr">legal@nawly.eg</a>
+        </div>
+      </aside>
+
+      <!-- Left long-form legal text in RTL (8 cols) -->
+      <article class="lg:col-span-8 bg-white rounded-2xl border border-light-outline-variant/80 p-8 sm:p-10 shadow-sm space-y-10 text-body-md leading-relaxed text-light-on-surface">
+        
+        <section id="term-1" class="space-y-3 scroll-mt-28">
+          <h2 class="font-headline font-bold text-headline-md text-light-primary">1. تمهيد وطبيعة عمل منصة ناولي</h2>
+          <p>
+            تعد منصة <strong>ناولي</strong> سوقاً إلكترونياً محلياً مستقلاً تم تطويره خصيصاً لخدمة أهالي وتجار وقرى منطقة <strong>نوى، مركز شبين القناطر، محافظة القليوبية</strong>، بهدف ربط الزبائن بالمحلات المحلية المستقلة (مطاعم، مخابز، صيدليات، وسوبرماركت) وتوفير شبكة كباتن توصيل مستقلين من شباب القرية. ناولي لا تمتلك المتاجر ولا تتدخل في إعداد الأطعمة أو تحديد مكوناتها.
+          </p>
+        </section>
+
+        <section id="term-2" class="space-y-3 scroll-mt-28 border-t border-light-outline-variant/40 pt-8">
+          <h2 class="font-headline font-bold text-headline-md text-light-primary">2. طلبات الشراء والدفع نقدًا (كاش)</h2>
+          <p>
+            وفقًا لمبدأ <em>&#34;الوضوح المالي التام&#34;</em> المعتمد بالمنصة:
+          </p>
+          <ul class="list-disc list-inside space-y-2 text-light-on-surface-variant pr-2">
+            <li>كافة الأسعار المعروضة بالمنصة هي بالجنيه المصري (ج.م / EGP) شاملة الضرائب المعمول بها في المحلات.</li>
+            <li>يتم تحصيل كامل قيمة الطلب مضافاً إليها رسوم التوصيل المعلنة مسبقاً نقدًا عند الاستلام بواسطة كابتن التوصيل.</li>
+            <li>يلتزم الزبون بتجهيز المبلغ المستحق نقدًا عند وصول الكابتن لباب العقار لتجنب تأخير مسار التوصيل.</li>
+          </ul>
+        </section>
+
+        <section id="term-3" class="space-y-3 scroll-mt-28 border-t border-light-outline-variant/40 pt-8">
+          <h2 class="font-headline font-bold text-headline-md text-light-primary">3. مسؤوليات كباتن التوصيل</h2>
+          <p>
+            كباتن ناولي هم شركاء مستقلون تم التحقق من هوياتهم الوطنية وسجلاتهم المدنية بالقرية. يلتزم كل كابتن بالحفاظ على سلامة الوجبات في الحقيبة الحرارية المخصصة، وتسليم المبالغ النقدية للمتاجر فور انتهاء مهمة التوصيل، ومعاملة أهالي القرية بأقصى درجات الاحترام والأمانة.
+          </p>
+        </section>
+
+        <section id="term-4" class="space-y-3 scroll-mt-28 border-t border-light-outline-variant/40 pt-8">
+          <h2 class="font-headline font-bold text-headline-md text-light-primary">4. شروط المتاجر وأسعار الأصناف</h2>
+          <p>
+            تتعهد كافة المتاجر المشتركة في ناولي بتقديم أسعار مطابقة لأسعار الصالة والمنيو العادي بالقرية دون أي زيادات مصطنعة، مع الالتزام بالمعايير الصحية الصارمة والتغليف المحكم للأطعمة والمنتجات.
+          </p>
+        </section>
+
+        <section id="term-5" class="space-y-3 scroll-mt-28 border-t border-light-outline-variant/40 pt-8">
+          <h2 class="font-headline font-bold text-headline-md text-light-primary">5. سياسة الخصوصية وسرية أرقام الهواتف</h2>
+          <p>
+            نحن نحترم خصوصية أهلنا في قرية نوى أشد الاحترام:
+          </p>
+          <ul class="list-disc list-inside space-y-2 text-light-on-surface-variant pr-2">
+            <li>رقم هاتفك المحمول يُستخدم فقط لإرسال كود التحقق (OTP) والتواصل بخصوص موقع تسليم الأوردر.</li>
+            <li>لا يتم بيع أو مشاركة أي بيانات شخصية مع أي جهات خارجية أو معلنين على الإطلاق.</li>
+            <li>صور بطاقات الرقم القومي للكباتن مشفرة بالكامل ولا يطلع عليها سوى مدير العمليات المخول بالقرية.</li>
+          </ul>
+        </section>
+
+        <section id="term-6" class="space-y-3 scroll-mt-28 border-t border-light-outline-variant/40 pt-8">
+          <h2 class="font-headline font-bold text-headline-md text-light-primary">6. الإلغاء والشكاوى وحل النزاعات</h2>
+          <p>
+            في حال وجود أي خطأ في محتويات الطلب، يتكفل فريق ناولي بالقرية بتعويض الزبون فورًا بالتنسيق مع المحل المعني. تخضع كافة النزاعات لقوانين جمهورية مصر العربية وأعراف التجارة المحلية بمركز شبين القناطر.
+          </p>
+        </section>
+
+      </article>
+
+    </div>
+  </main>
+
+  <!-- ================= VIEW 3: SYSTEM 404 PAGE (/404) ================= -->
+  <main id="view-404" class="view-panel flex-1 max-w-4xl w-full mx-auto px-6 py-16 flex items-center justify-center hidden">
+    <div class="bg-white rounded-3xl border border-light-outline-variant/80 p-10 sm:p-14 text-center space-y-6 shadow-md w-full">
+      <div class="w-24 h-24 rounded-3xl bg-light-surface-variant text-light-primary flex items-center justify-center mx-auto shadow-inner">
+        <span class="material-symbols-outlined text-6xl">wrong_location</span>
+      </div>
+
+      <div class="space-y-3">
+        <span class="font-code font-bold text-5xl sm:text-6xl text-light-primary block">404</span>
+        <h1 class="font-headline font-extrabold text-headline-xl text-light-on-surface">يبدو أنك سلكت طريقًا غير موجود في نوى!</h1>
+        <p class="text-body-md text-light-on-surface-variant max-w-lg mx-auto">
+          الصفحة أو المتجر الذي تبحث عنه قد يكون تم تغيير عنوانه، أو أنك أدخلت رابطًا غير صحيح. لا تقلق، كل مطاعم ومحلات القرية بانتظارك على الصفحة الرئيسية.
+        </p>
+      </div>
+
+      <div class="pt-4 flex flex-wrap justify-center gap-4">
+        <a href="../signin/CustomerSignIn.html" class="px-8 py-3.5 rounded-xl bg-light-primary hover:bg-light-primary/95 text-light-on-primary font-headline text-label-lg font-bold flex items-center gap-2 shadow-md transition-all">
+          <span class="material-symbols-outlined text-xl">home</span>
+          <span>العودة لصفحة ناولي الرئيسية</span>
+        </a>
+        <button onclick="switchView(&#39;help&#39;)" class="px-6 py-3.5 rounded-xl border border-light-outline hover:bg-light-surface-variant/40 text-light-on-surface font-headline text-label-md font-semibold transition-all">
+          التواصل مع الدعم الفني
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Desktop Footer -->
+  <footer class="w-full bg-white border-t border-light-outline-variant/50 py-8 text-center text-body-sm text-light-on-surface-variant mt-auto">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+      <span>ناولي — مركز المساعدة والشروط القانونية المعتمدة لقرية نوى © 2026</span>
+      <div class="flex items-center gap-6">
+        <button onclick="switchView(&#39;help&#39;)" class="hover:text-light-primary transition-colors font-headline">الأسئلة الشائعة</button>
+        <button onclick="switchView(&#39;terms&#39;)" class="hover:text-light-primary transition-colors font-headline">الشروط والخصوصية</button>
+        <button onclick="switchView(&#39;404&#39;)" class="hover:text-light-primary transition-colors font-headline">صفحة الخطأ 404</button>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function switchView(viewName) {
+      document.querySelectorAll('.view-panel').forEach(el => el.classList.add('hidden'));
+      const activeEl = document.getElementById('view-' + viewName);
+      if (activeEl) activeEl.classList.remove('hidden');
+
+      // Update Header Tab Buttons
+      const helpBtn = document.getElementById('tab-btn-help');
+      const termsBtn = document.getElementById('tab-btn-terms');
+      const errBtn = document.getElementById('tab-btn-404');
+
+      [helpBtn, termsBtn, errBtn].forEach(btn => {
+        btn.className = 'px-4 py-2 rounded-lg font-headline text-label-md font-semibold text-light-on-surface-variant hover:text-light-on-surface transition-all';
+      });
+
+      if (viewName === 'help') {
+        helpBtn.className = 'px-4 py-2 rounded-lg font-headline text-label-md font-bold transition-all bg-white text-light-primary shadow-sm';
+      } else if (viewName === 'terms') {
+        termsBtn.className = 'px-4 py-2 rounded-lg font-headline text-label-md font-bold transition-all bg-white text-light-primary shadow-sm';
+      } else if (viewName === '404') {
+        errBtn.className = 'px-4 py-2 rounded-lg font-headline text-label-md font-bold transition-all bg-white text-light-primary shadow-sm';
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Check URL params on load
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const tab = urlParams.get('tab');
+      if (tab === 'terms' || tab === 'privacy') {
+        switchView('terms');
+      } else if (tab === '404') {
+        switchView('404');
+      }
+    } catch(e) {}
+  </script>
+
+
+</body></html>

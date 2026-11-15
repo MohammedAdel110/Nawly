@@ -1,0 +1,418 @@
+@import "tailwindcss";
+
+@theme {
+  /* Modern Architectural Nawa Marketplace Tokens */
+  --color-accent: #EA580C;
+  --color-success: #15803D;
+  --color-error: #BA1A1A;
+  --color-warning: #D97706;
+  --color-light-primary: #0F766E;
+  --color-light-on-primary: #FFFFFF;
+  --color-light-primary-container: #F0FDFA;
+  --color-light-on-primary-container: #134E4A;
+  --color-light-secondary: #334155;
+  --color-light-on-secondary: #FFFFFF;
+  --color-light-secondary-container: #F1F5F9;
+  --color-light-on-secondary-container: #0F172A;
+  --color-light-surface: #F8FAFC;
+  --color-light-on-surface: #0F172A;
+  --color-light-surface-variant: #F1F5F9;
+  --color-light-on-surface-variant: #475569;
+  --color-light-outline: #64748B;
+  --color-light-outline-variant: #E2E8F0;
+
+  --font-display: "Cairo", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-headline: "Cairo", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-body: "Tajawal", "Cairo", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-label: "Cairo", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-code: "Source Code Pro", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Backward-compatible semantic aliases */
+  --color-canvas: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-surface-muted: #F1F5F9;
+  --color-ink: #0F172A;
+  --color-ink-muted: #475569;
+  --color-border-strong: #64748B;
+  --color-border-subtle: #E2E8F0;
+
+  --color-brand: #0F766E;
+  --color-brand-hover: #115E59;
+  --color-brand-soft: #F0FDFA;
+
+  --color-accent-hover: #C2410C;
+  --color-accent-soft: #FFF7ED;
+
+  --color-success-soft: #F0FDF4;
+  --color-warning-soft: #FFFBEB;
+  --color-danger: #BA1A1A;
+  --color-danger-soft: #FEF2F2;
+
+  --font-arabic: "Tajawal", "Cairo", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-latin: "Cairo", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+:root {
+  color-scheme: light;
+  --nawly-canvas: #F8FAFC;
+  --nawly-surface: #FFFFFF;
+  --nawly-surface-muted: #F1F5F9;
+  --nawly-ink: #0F172A;
+  --nawly-ink-muted: #475569;
+  --nawly-border: #64748B;
+  --nawly-border-subtle: #E2E8F0;
+  --nawly-brand: #0F766E;
+  --nawly-brand-hover: #115E59;
+  --nawly-accent: #EA580C;
+  --nawly-success: #15803D;
+  --nawly-warning: #D97706;
+  --nawly-danger: #BA1A1A;
+}
+
+html {
+  background-color: var(--nawly-canvas);
+  color: var(--nawly-ink);
+  font-family: var(--font-arabic);
+  font-feature-settings: "tnum" 1;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html[lang="en"] {
+  font-family: var(--font-latin);
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background-color: var(--nawly-canvas);
+  color: var(--nawly-ink);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Guarantee Western digits 0-9 across RTL/LTR UIs, phones, OTPs, and currency */
+.ltr-num,
+input[type="tel"],
+input[type="number"],
+input[inputmode="numeric"] {
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-variant-numeric: tabular-nums;
+}
+
+/* High-visibility keyboard & touch focus rings (WCAG 2.2 AA) */
+:focus-visible {
+  outline: 3px solid #0D9488;
+  outline-offset: 2px;
+}
+
+/* Skip to main content link */
+.skip-link {
+  position: absolute;
+  inset-inline-start: -9999px;
+  top: 0.75rem;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.75rem;
+  background-color: #18181B;
+  color: #FFFFFF;
+  font-weight: 700;
+}
+
+.skip-link:focus {
+  inset-inline-start: 0.75rem;
+}
+
+/* Grounded Tactile Card */
+.nawly-card {
+  background-color: var(--nawly-surface);
+  border: 1.5px solid var(--nawly-border);
+  border-radius: 1rem;
+  box-shadow: 0 2px 6px rgba(24, 24, 27, 0.04), 0 1px 0 rgba(24, 24, 27, 0.03);
+}
+
+.nawly-card-muted {
+  background-color: var(--nawly-surface-muted);
+  border: 1.5px solid var(--nawly-border-subtle);
+  border-radius: 1rem;
+}
+
+/* Form Labels & Controls (minimum 48px tap targets) */
+.nawly-label {
+  display: block;
+  margin-bottom: 0.375rem;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--nawly-ink);
+}
+
+.nawly-hint {
+  margin-top: 0.375rem;
+  font-size: 0.875rem;
+  color: var(--nawly-ink-muted);
+}
+
+.nawly-input,
+.nawly-select,
+.nawly-textarea {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.625rem 0.875rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--nawly-ink);
+  background-color: #FFFFFF;
+  border: 1.5px solid var(--nawly-border);
+  border-radius: 0.75rem;
+  transition: border-color 140ms ease, box-shadow 140ms ease, background-color 140ms ease;
+}
+
+.nawly-textarea {
+  min-height: 96px;
+}
+
+.nawly-input:hover:not(:disabled),
+.nawly-select:hover:not(:disabled),
+.nawly-textarea:hover:not(:disabled) {
+  border-color: #A8A092;
+}
+
+.nawly-input:focus,
+.nawly-select:focus,
+.nawly-textarea:focus {
+  outline: none;
+  border-color: var(--nawly-brand);
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.16);
+}
+
+.nawly-input-error {
+  border-color: var(--nawly-danger) !important;
+  background-color: #FEF2F2;
+}
+
+.nawly-input-error:focus {
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.16) !important;
+}
+
+/* Tactile Buttons (minimum 48px touch target) */
+.nawly-btn-primary,
+.nawly-btn-secondary,
+.nawly-btn-outline,
+.nawly-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  padding: 0.625rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 140ms ease, border-color 140ms ease, transform 90ms ease;
+}
+
+.nawly-btn-primary {
+  background-color: var(--nawly-brand);
+  color: #FFFFFF;
+  border: 1.5px solid var(--nawly-brand);
+}
+
+.nawly-btn-primary:hover:not(:disabled) {
+  background-color: var(--nawly-brand-hover);
+  border-color: var(--nawly-brand-hover);
+}
+
+.nawly-btn-secondary {
+  background-color: var(--nawly-accent);
+  color: #FFFFFF;
+  border: 1.5px solid var(--nawly-accent);
+}
+
+.nawly-btn-secondary:hover:not(:disabled) {
+  background-color: #C2410C;
+  border-color: #C2410C;
+}
+
+.nawly-btn-outline {
+  background-color: #FFFFFF;
+  color: var(--nawly-ink);
+  border: 1.5px solid var(--nawly-border);
+}
+
+.nawly-btn-outline:hover:not(:disabled) {
+  background-color: var(--nawly-surface-muted);
+  border-color: #A8A092;
+}
+
+.nawly-btn-ghost {
+  background-color: transparent;
+  color: var(--nawly-brand);
+  border: 1.5px solid transparent;
+}
+
+.nawly-btn-ghost:hover:not(:disabled) {
+  background-color: #F0FDFA;
+}
+
+.nawly-btn-primary:active:not(:disabled),
+.nawly-btn-secondary:active:not(:disabled),
+.nawly-btn-outline:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.nawly-btn-primary:disabled,
+.nawly-btn-secondary:disabled,
+.nawly-btn-outline:disabled,
+.nawly-btn-ghost:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Status & Feedback Banners */
+.nawly-banner-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  padding: 0.875rem 1rem;
+  border-radius: 0.75rem;
+  border: 1.5px solid #FCA5A5;
+  background-color: #FEF2F2;
+  color: #991B1B;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.nawly-banner-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  padding: 0.875rem 1rem;
+  border-radius: 0.75rem;
+  border: 1.5px solid #FCD34D;
+  background-color: #FFFBEB;
+  color: #92400E;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.nawly-banner-success {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  padding: 0.875rem 1rem;
+  border-radius: 0.75rem;
+  border: 1.5px solid #86EFAC;
+  background-color: #F0FDF4;
+  color: #166534;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+/* Warm Skeleton Loader */
+.nawly-skeleton {
+  background: linear-gradient(90deg, #EFEBE3 25%, #F8F5EF 50%, #EFEBE3 75%);
+  background-size: 200% 100%;
+  animation: nawly-shimmer 1.4s ease-in-out infinite;
+  border-radius: 0.625rem;
+}
+
+@keyframes nawly-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Stitch Typography Scale */
+.text-display-lg {
+  font-size: 40px;
+  line-height: 48px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.text-headline-xl {
+  font-size: 34px;
+  line-height: 42px;
+  font-weight: 700;
+  letter-spacing: -0.25px;
+}
+
+.text-headline-lg {
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 600;
+}
+
+.text-headline-md {
+  font-size: 22px;
+  line-height: 30px;
+  font-weight: 600;
+}
+
+.text-headline-sm {
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 600;
+}
+
+.text-body-lg {
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 400;
+}
+
+.text-body-md {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+}
+
+.text-body-sm {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+}
+
+.text-label-lg {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+}
+
+.text-label-md {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  letter-spacing: 0.25px;
+}
+
+.text-label-sm {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+}
+
+.text-code-md {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 600;
+}
+
+/* Material Symbols Outlined Fix (prevent RTL flip & collapse) */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  line-height: 1 !important;
+  direction: ltr;
+  vertical-align: middle;
+  user-select: none;
+}

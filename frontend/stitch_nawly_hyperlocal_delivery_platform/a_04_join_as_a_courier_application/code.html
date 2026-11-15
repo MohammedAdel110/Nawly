@@ -1,0 +1,410 @@
+<!DOCTYPE html><html lang="ar" dir="rtl"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>انضم ككابتن توصيل — ناولي</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'accent': '#B45309',
+        'success': '#15803D',
+        'error': '#BA1A1A',
+        'warning': '#D97706',
+        'light-primary': '#006874',
+        'light-on-primary': '#FFFFFF',
+        'light-primary-container': '#97F0FF',
+        'light-on-primary-container': '#001F24',
+        'light-secondary': '#4A6267',
+        'light-on-secondary': '#FFFFFF',
+        'light-secondary-container': '#CCE8ED',
+        'light-on-secondary-container': '#051F23',
+        'light-surface': '#FBFDFD',
+        'light-on-surface': '#191C1D',
+        'light-surface-variant': '#DBE4E6',
+        'light-on-surface-variant': '#3F484A',
+        'light-outline': '#6F797B',
+        'light-outline-variant': '#BFC8CA',
+        'dark-primary': '#4FD8EB',
+        'dark-on-primary': '#00363D',
+        'dark-primary-container': '#004F58',
+        'dark-on-primary-container': '#97F0FF',
+        'dark-secondary': '#B0CBD0',
+        'dark-on-secondary': '#1B3439',
+        'dark-secondary-container': '#324B4F',
+        'dark-on-secondary-container': '#CCE8ED',
+        'dark-surface': '#191C1D',
+        'dark-on-surface': '#E1E3E3',
+        'dark-surface-variant': '#3F484A',
+        'dark-on-surface-variant': '#BFC8CA',
+        'dark-outline': '#899294',
+        'dark-outline-variant': '#3F484A',
+      },
+      borderRadius: {
+        'sm': '6px',
+        'DEFAULT': '10px',
+        'md': '12px',
+        'lg': '16px',
+        'xl': '20px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '48px',
+        'page-margin': '32px',
+      },
+      fontFamily: {
+        'display': ['"Cairo"', 'sans-serif'],
+        'headline': ['"Cairo"', 'sans-serif'],
+        'body': ['"Tajawal"', 'sans-serif'],
+        'label': ['"Cairo"', 'sans-serif'],
+        'code': ['"Source Code Pro"', 'monospace'],
+      },
+      fontSize: {
+        'display-lg': ['40px', { lineHeight: '48px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'display-lg-mobile': ['28px', { lineHeight: '36px', fontWeight: '700' }],
+        'headline-xl': ['34px', { lineHeight: '42px', fontWeight: '700' }],
+        'headline-xl-mobile': ['26px', { lineHeight: '34px', fontWeight: '700' }],
+        'headline-lg': ['28px', { lineHeight: '36px', fontWeight: '600' }],
+        'headline-lg-mobile': ['22px', { lineHeight: '30px', fontWeight: '600' }],
+        'headline-md': ['22px', { lineHeight: '30px', fontWeight: '600' }],
+        'headline-sm': ['18px', { lineHeight: '26px', fontWeight: '600' }],
+        'body-lg': ['18px', { lineHeight: '28px', fontWeight: '400' }],
+        'body-md': ['16px', { lineHeight: '24px', fontWeight: '400' }],
+        'body-sm': ['14px', { lineHeight: '20px', fontWeight: '400' }],
+        'label-lg': ['16px', { lineHeight: '24px', fontWeight: '600' }],
+        'label-md': ['14px', { lineHeight: '20px', fontWeight: '600' }],
+        'label-sm': ['12px', { lineHeight: '16px', fontWeight: '500' }],
+        'code-md': ['16px', { lineHeight: '22px', fontWeight: '600' }],
+      },
+      transitionDuration: {
+        'state-change': '120ms',
+        'surface-enter': '220ms',
+        'surface-exit': '140ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'ease-out',
+        'surface-enter': 'cubic-bezier(0.16, 1, 0.3, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&amp;family=Tajawal:wght@400;500;700&amp;family=Source+Code+Pro:wght@600;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined { display: inline-block; width: 1em; height: 1em; line-height: 1 !important; box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle; }
+  </style>
+</head>
+<body class="bg-light-surface text-light-on-surface min-h-[1024px] flex flex-col font-body antialiased selection:bg-light-primary-container selection:text-light-on-primary-container" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+  <!-- Desktop Header -->
+  <header class="w-full bg-white border-b border-light-outline-variant/50 sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <a href="../signin/CustomerSignIn.html" class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-xl bg-light-primary flex items-center justify-center text-white shadow-sm shadow-light-primary/20">
+          <span class="material-symbols-outlined text-2xl" style="font-variation-settings: &#39;FILL&#39; 1;">moped</span>
+        </div>
+        <div class="flex flex-col">
+          <div class="flex items-baseline gap-1.5">
+            <span class="font-headline font-extrabold text-2xl text-light-primary tracking-tight">ناولي</span>
+            <span class="text-xs font-semibold text-amber-900 px-2 py-0.5 rounded-full bg-amber-100">كباتن التوصيل</span>
+          </div>
+          <span class="text-xs text-light-on-surface-variant font-medium">سجل واشتغل في قريتك بأوقاتك الحرة وبدخل فوري كاش</span>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-4">
+        <span class="text-body-sm text-light-on-surface-variant hidden sm:inline">كابتن مسجل مسبقًا؟</span>
+        <a href="../staff-signin/StaffSignIn.html" class="px-4 py-2 rounded-lg border border-light-outline text-light-primary hover:bg-light-surface-variant/40 font-headline text-label-md transition-colors">
+          دخول تطبيق الكابتن
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Multi-Card Application Form -->
+  <main class="flex-1 max-w-5xl w-full mx-auto px-6 py-10 space-y-10">
+    
+    <!-- Hero Banner -->
+    <div class="bg-gradient-to-r from-light-primary to-teal-800 rounded-2xl p-8 text-white shadow-md flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="space-y-2 max-w-xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 text-white text-xs font-headline font-bold">
+          <span class="material-symbols-outlined text-sm">payments</span>
+          <span>تحصيل يومي نقدًا لكامل أتعاب التوصيل</span>
+        </div>
+        <h1 class="font-headline font-extrabold text-headline-xl">انضم لأسطول كباتن ناولي بقرية نوى</h1>
+        <p class="text-white/90 text-body-md leading-relaxed">
+          وصل طلبات أهلك وجيرانك في نوى بدراجتك، الموتوسيكل، أو حتى مشيًا على الأقدام. لا اشتراكات ولا خصومات معقدة: كل توصيلة بكاشها الفوري!
+        </p>
+      </div>
+
+      <div class="p-4 rounded-xl bg-white/10 border border-white/20 text-center shrink-0 min-w-[200px]">
+        <span class="text-xs block text-white/80 font-headline">متوسط دخل الكابتن اليومي</span>
+        <strong class="font-code font-bold text-3xl text-amber-300 block my-1">250 - 400</strong>
+        <span class="text-xs block text-white/90">جنيه مصري (EGP) يوميًا</span>
+      </div>
+    </div>
+
+    <!-- The 3 Form Cards -->
+    <form id="courier-form" class="space-y-8" onsubmit="event.preventDefault(); document.getElementById(&#39;courier-form&#39;).classList.add(&#39;hidden&#39;); document.getElementById(&#39;courier-success&#39;).classList.remove(&#39;hidden&#39;); window.scrollTo({top: 0, behavior: &#39;smooth&#39;});">
+
+      <!-- SECTION 1: Personal Information -->
+      <div class="bg-white rounded-2xl border border-light-outline-variant/80 p-8 shadow-sm space-y-6">
+        <div class="flex items-center gap-3 border-b border-light-outline-variant/50 pb-4">
+          <div class="w-10 h-10 rounded-xl bg-light-primary/10 text-light-primary flex items-center justify-center font-headline font-bold">
+            1
+          </div>
+          <div>
+            <h2 class="font-headline font-bold text-headline-md text-light-on-surface">البيانات الشخصية للكابتن</h2>
+            <p class="text-body-sm text-light-on-surface-variant">الاسم ورقم التواصل الأساسي المعتمد في القرية</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="md:col-span-2">
+            <label class="block font-headline text-label-md text-light-on-surface mb-2">الاسم بالكامل (ثلاثي أو رباعي حسب بطاقة الرقم القومي) <span class="text-error">*</span></label>
+            <input type="text" placeholder="مثال: أحمد عبد الله سلامة النجار" value="أحمد السيد إبراهيم خليل" required class="w-full px-4 py-3 rounded-xl border border-light-outline text-light-on-surface placeholder:text-light-outline focus:ring-2 focus:ring-light-primary text-body-md">
+          </div>
+
+          <div>
+            <label class="block font-headline text-label-md text-light-on-surface mb-2">رقم الموبايل (واتساب والمكالمات) <span class="text-error">*</span></label>
+            <div class="relative flex items-center rounded-xl border border-light-outline bg-white focus-within:ring-2 focus-within:ring-light-primary focus-within:border-light-primary overflow-hidden">
+              <div class="px-4 py-3 bg-light-surface-variant/60 border-l border-light-outline-variant flex items-center gap-2 text-light-on-surface font-code text-code-md select-none shrink-0" dir="ltr">
+                <span>🇪🇬</span>
+                <span class="font-bold text-light-primary">+20</span>
+              </div>
+              <input type="tel" dir="ltr" placeholder="01012345678" value="01289123456" maxlength="11" required class="w-full px-4 py-3 text-light-on-surface placeholder:text-light-outline font-code text-code-md border-0 focus:ring-0 text-left">
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-headline text-label-md text-light-on-surface mb-2">كلمة المرور لتطبيق الكابتن <span class="text-error">*</span></label>
+            <input type="password" placeholder="كلمة مرور للدخول إلى تطبيق الكابتن" value="CaptainNawa2026!" required class="w-full px-4 py-3 rounded-xl border border-light-outline text-light-on-surface placeholder:text-light-outline focus:ring-2 focus:ring-light-primary">
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 2: Vehicle Type Selector Cards with Icons -->
+      <div class="bg-white rounded-2xl border border-light-outline-variant/80 p-8 shadow-sm space-y-6">
+        <div class="flex items-center gap-3 border-b border-light-outline-variant/50 pb-4">
+          <div class="w-10 h-10 rounded-xl bg-light-primary/10 text-light-primary flex items-center justify-center font-headline font-bold">
+            2
+          </div>
+          <div>
+            <h2 class="font-headline font-bold text-headline-md text-light-on-surface">وسيلة التوصيل المتاحة لديك</h2>
+            <p class="text-body-sm text-light-on-surface-variant">اختر الوسيلة التي ستستخدمها في توصيل الطلبات بالقرية</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+          
+          <!-- Motorcycle -->
+          <label class="vehicle-card p-4 rounded-xl border-2 border-light-primary bg-light-primary/5 flex flex-col items-center text-center cursor-pointer transition-all hover:shadow-md">
+            <input type="radio" name="vehicle-type" value="motorcycle" checked class="sr-only">
+            <div class="w-12 h-12 rounded-xl bg-light-primary text-white flex items-center justify-center mb-3">
+              <span class="material-symbols-outlined text-2xl">two_wheeler</span>
+            </div>
+            <h3 class="font-headline text-label-md font-bold text-light-primary">موتوسيكل</h3>
+            <span class="text-xs text-light-on-surface-variant mt-1">تغطية سريعة لكل النواحي</span>
+          </label>
+
+          <!-- Scooter -->
+          <label class="vehicle-card p-4 rounded-xl border border-light-outline-variant hover:border-light-outline flex flex-col items-center text-center cursor-pointer transition-all hover:shadow-md">
+            <input type="radio" name="vehicle-type" value="scooter" class="sr-only">
+            <div class="w-12 h-12 rounded-xl bg-light-surface-variant text-light-on-surface flex items-center justify-center mb-3">
+              <span class="material-symbols-outlined text-2xl">electric_scooter</span>
+            </div>
+            <h3 class="font-headline text-label-md font-bold text-light-on-surface">سكوتر كهربائي</h3>
+            <span class="text-xs text-light-on-surface-variant mt-1">اقتصادي ومناسب للحارات</span>
+          </label>
+
+          <!-- Bicycle -->
+          <label class="vehicle-card p-4 rounded-xl border border-light-outline-variant hover:border-light-outline flex flex-col items-center text-center cursor-pointer transition-all hover:shadow-md">
+            <input type="radio" name="vehicle-type" value="bicycle" class="sr-only">
+            <div class="w-12 h-12 rounded-xl bg-light-surface-variant text-light-on-surface flex items-center justify-center mb-3">
+              <span class="material-symbols-outlined text-2xl">pedal_bike</span>
+            </div>
+            <h3 class="font-headline text-label-md font-bold text-light-on-surface">دراجة هوائية (عجلة)</h3>
+            <span class="text-xs text-light-on-surface-variant mt-1">بدون تكلفة بنزين نهائيًا</span>
+          </label>
+
+          <!-- Car -->
+          <label class="vehicle-card p-4 rounded-xl border border-light-outline-variant hover:border-light-outline flex flex-col items-center text-center cursor-pointer transition-all hover:shadow-md">
+            <input type="radio" name="vehicle-type" value="car" class="sr-only">
+            <div class="w-12 h-12 rounded-xl bg-light-surface-variant text-light-on-surface flex items-center justify-center mb-3">
+              <span class="material-symbols-outlined text-2xl">directions_car</span>
+            </div>
+            <h3 class="font-headline text-label-md font-bold text-light-on-surface">سيارة / سوزوكي فان</h3>
+            <span class="text-xs text-light-on-surface-variant mt-1">للطلبات الكبيرة والعزومات</span>
+          </label>
+
+          <!-- On Foot -->
+          <label class="vehicle-card p-4 rounded-xl border border-light-outline-variant hover:border-light-outline flex flex-col items-center text-center cursor-pointer transition-all hover:shadow-md">
+            <input type="radio" name="vehicle-type" value="foot" class="sr-only">
+            <div class="w-12 h-12 rounded-xl bg-light-surface-variant text-light-on-surface flex items-center justify-center mb-3">
+              <span class="material-symbols-outlined text-2xl">directions_walk</span>
+            </div>
+            <h3 class="font-headline text-label-md font-bold text-light-on-surface">سيرًا على الأقدام</h3>
+            <span class="text-xs text-light-on-surface-variant mt-1">لتوصيل نفس الشارع والمربع</span>
+          </label>
+
+        </div>
+      </div>
+
+      <!-- SECTION 3: Documents & National ID Upload -->
+      <div class="bg-white rounded-2xl border border-light-outline-variant/80 p-8 shadow-sm space-y-6">
+        <div class="flex items-center gap-3 border-b border-light-outline-variant/50 pb-4">
+          <div class="w-10 h-10 rounded-xl bg-light-primary/10 text-light-primary flex items-center justify-center font-headline font-bold">
+            3
+          </div>
+          <div>
+            <h2 class="font-headline font-bold text-headline-md text-light-on-surface">المستندات وإثبات الهوية</h2>
+            <p class="text-body-sm text-light-on-surface-variant">لضمان سلامة التعامل وأمان أهالي القرية والمتاجر</p>
+          </div>
+        </div>
+
+        <!-- Privacy & Security Notice with Lock Icon -->
+        <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200/80 text-emerald-950 flex items-start gap-3.5">
+          <div class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5">
+            <span class="material-symbols-outlined text-lg">lock</span>
+          </div>
+          <div class="space-y-1">
+            <h4 class="font-headline text-label-md font-bold text-emerald-900">حماية خصوصية بطاقة الرقم القومي</h4>
+            <p class="text-body-sm text-emerald-800 leading-relaxed">
+              صور المستندات والبطاقة الشخصية مشفرة بالكامل ولا تظهر للزبائن أو المتاجر نهائيًا، وتُستخدم فقط للتحقق من هوية الكابتن بواسطة مسؤولي منصة ناولي بنوى.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <!-- National ID Uploader (Front & Back) -->
+          <div class="space-y-2">
+            <label class="block font-headline text-label-md text-light-on-surface">
+              صورة بطاقة الرقم القومي (الوجه الأمامي) <span class="text-error">*</span>
+            </label>
+            <div class="border-2 border-dashed border-light-outline-variant hover:border-light-primary rounded-xl p-6 text-center bg-light-surface-variant/20 cursor-pointer transition-colors flex flex-col items-center justify-center gap-2">
+              <span class="material-symbols-outlined text-4xl text-light-outline">badge</span>
+              <div class="font-headline text-label-md font-bold text-light-on-surface">
+                اسحب وأفلت صورة البطاقة هنا، أو <span class="text-light-primary underline">تصفح الملفات</span>
+              </div>
+              <span class="text-xs text-light-on-surface-variant">صيغ JPG, PNG, PDF (الحد الأقصى 5 ميجابايت)</span>
+              
+              <!-- Mock uploaded state badge -->
+              <div class="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold">
+                <span class="material-symbols-outlined text-sm">check_circle</span>
+                <span>national_id_front.jpg (2.4 MB)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Optional Profile Photo -->
+          <div class="space-y-2">
+            <label class="block font-headline text-label-md text-light-on-surface">
+              صورة شخصية واضحة للكابتن (اختياري)
+            </label>
+            <div class="border-2 border-dashed border-light-outline-variant hover:border-light-primary rounded-xl p-6 text-center bg-light-surface-variant/20 cursor-pointer transition-colors flex flex-col items-center justify-center gap-2">
+              <span class="material-symbols-outlined text-4xl text-light-outline">account_circle</span>
+              <div class="font-headline text-label-md font-bold text-light-on-surface">
+                صورة وجه واضحة للملف الشخصي (اختياري)
+              </div>
+              <span class="text-xs text-light-on-surface-variant">تساعد الزبون والتاجر في التعرف عليك بسهولة</span>
+              <span class="mt-1 text-xs text-light-primary font-bold">رفع صورة من الهاتف / الكمبيوتر</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Submit CTA -->
+      <div class="bg-white rounded-2xl border border-light-outline-variant/80 p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <label class="flex items-start gap-3 cursor-pointer">
+          <input type="checkbox" checked required class="mt-1 w-4 h-4 text-light-primary border-light-outline rounded focus:ring-light-primary">
+          <span class="text-body-sm text-light-on-surface leading-relaxed">
+            أقر بأنني مقيم بقرية نوى أو ضواحيها، وأتعهد بالأمانة والالتزام بتسليم المبالغ النقدية للمتاجر فور توصيل الطلبات.
+          </span>
+        </label>
+        <button type="submit" class="w-full sm:w-auto px-10 py-4 rounded-xl bg-light-primary hover:bg-light-primary/95 text-light-on-primary font-headline text-label-lg font-bold flex items-center justify-center gap-2 shrink-0 cursor-pointer shadow-lg shadow-light-primary/25">
+          <span class="material-symbols-outlined text-2xl">how_to_reg</span>
+          <span>تقديم طلب الانضمام ككابتن</span>
+        </button>
+      </div>
+
+    </form>
+
+    <!-- Success Confirmation View (Hidden by default) -->
+    <div id="courier-success" class="bg-white rounded-2xl border border-light-outline-variant/80 p-12 text-center space-y-6 hidden shadow-md">
+      <div class="w-20 h-20 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto shadow-inner">
+        <span class="material-symbols-outlined text-5xl">sports_motorsports</span>
+      </div>
+      <div class="max-w-md mx-auto space-y-2">
+        <h2 class="font-headline font-extrabold text-headline-xl text-light-on-surface">أهلاً بك يا كابتن في ناولي!</h2>
+        <p class="text-body-md text-light-on-surface-variant">
+          تم استلام طلب انضمامك برقم: <span class="font-code font-bold text-light-primary">#NW-CPT-2026-042</span>
+        </p>
+        <p class="text-body-sm text-light-on-surface-variant pt-2 leading-relaxed">
+          سنتواصل معك عبر واتساب على الرقم المسجل خلال ساعات لتسليمك حقيبة التوصيل وتفعيل حسابك لتبدأ في استقبال أوردرات أهالي نوى فورًا.
+        </p>
+      </div>
+
+      <div class="pt-6 flex flex-wrap justify-center gap-4">
+        <a href="../staff-signin/StaffSignIn.html" class="px-6 py-3 rounded-xl bg-light-primary text-white font-headline text-label-md font-bold hover:bg-light-primary/95 transition-colors">
+          صفحة تسجيل دخول الكباتن
+        </a>
+        <a href="../signin/CustomerSignIn.html" class="px-6 py-3 rounded-xl border border-light-outline text-light-on-surface hover:bg-light-surface-variant/40 font-headline text-label-md font-medium transition-colors">
+          العودة للرئيسية
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="w-full bg-white border-t border-light-outline-variant/50 py-8 text-center text-body-sm text-light-on-surface-variant mt-auto">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+      <span>ناولي — دعم شباب وكباتن قرية نوى، مركز شبين القناطر</span>
+      <div class="flex items-center gap-4 text-xs">
+        <a href="../legal-help/LegalHelp.html?tab=terms" class="hover:underline">ميثاق شرف كابتن ناولي</a>
+        <span>•</span>
+        <a href="../legal-help/LegalHelp.html?tab=help" class="hover:underline">مركز مساعدة الكباتن</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Radio selection cards styling
+    const vehicleCards = document.querySelectorAll('.vehicle-card');
+    vehicleCards.forEach(card => {
+      card.addEventListener('click', () => {
+        vehicleCards.forEach(c => {
+          c.className = 'vehicle-card p-4 rounded-xl border border-light-outline-variant hover:border-light-outline flex flex-col items-center text-center cursor-pointer transition-all hover:shadow-md';
+          const iconBox = c.querySelector('div');
+          iconBox.className = 'w-12 h-12 rounded-xl bg-light-surface-variant text-light-on-surface flex items-center justify-center mb-3';
+          const title = c.querySelector('h3');
+          title.className = 'font-headline text-label-md font-bold text-light-on-surface';
+        });
+        card.className = 'vehicle-card p-4 rounded-xl border-2 border-light-primary bg-light-primary/5 flex flex-col items-center text-center cursor-pointer transition-all hover:shadow-md';
+        const iconBox = card.querySelector('div');
+        iconBox.className = 'w-12 h-12 rounded-xl bg-light-primary text-white flex items-center justify-center mb-3';
+        const title = card.querySelector('h3');
+        title.className = 'font-headline text-label-md font-bold text-light-primary';
+      });
+    });
+  </script>
+
+
+</body></html>
